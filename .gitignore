@@ -4,3 +4,14 @@
 *.jar
 *.war
 *.ear
+
+# Mac specific #
+/.DS_Store
+
+# Eclipse #
+/.classpath
+/.project
+/.settings
+
+# Maven (in case of future use) #
+/target
