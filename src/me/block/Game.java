@@ -1,5 +1,7 @@
 package me.block;
 
+import java.util.ArrayList;
+
 import me.block.screen.Screen;
 import me.block.util.MyTextureLoader;
 
@@ -130,7 +132,7 @@ public class Game {
 		
 		glEnable(GL_TEXTURE_2D);
 		
-		glEnable(GL_CULL_FACE);
+//		glEnable(GL_CULL_FACE);
 	}
 
 	// ########### START THE GAME #######
@@ -145,6 +147,13 @@ public class Game {
 			System.err.println("Could not create the display");
 			System.exit(1);
 		}
+		
+//		ArrayList<Integer> ints = new ArrayList<Integer>(5000);
+//		ints.add(0, 4711);
+//		ints.add(2, 1337);
+//		
+//		for(Integer i : ints)
+//			System.out.println(i);
 	}
 
 }

@@ -20,6 +20,8 @@ import org.lwjgl.util.vector.Vector3f;
  *         It is defined by x, y and z coordinates that are not 
  *         dependent from the coordinates of the blocks in
  *         the chunk. 
+ *         The height is from 0 to 16, where the initial surface 
+ *         is 8.
  *         
  */
 
@@ -32,7 +34,7 @@ public class Chunk {
 	public Chunk(){
 		blocks = new Block[16*16*16];
 		
-		loadChunk();
+		loadStandardChunk();
 		
 		displayList = GL11.glGenLists(1);
 
@@ -49,15 +51,26 @@ public class Chunk {
 		
 	}
 	
-	public void loadChunk(){
-		for (int i = 0; i < 16; i++) {
-			for (int j = 0; j < 16; j++) {
-				for (int k = 0; k < 16; k++) {
-					// if((i == 15 || i == 0) || (j == 15 || j== 0))
-					blocks[16*16*i+16*j+k] = new GrassBlock(i, -k, j);
+	public void loadStandardChunk(){
+		for (int i = 0; i < 16; i++) { //x
+			for (int j = 0; j < 16; j++) { //y
+				for (int k = 0; k < 11; k++) { //z
+					
+					if(k < 8)
+						blocks[16*16*i+16*j+k] = new GrassBlock(i, k, j);
+					else{
+						if((k<10) &&(i == 15 || i == 0) || (j == 15 || j== 0)){
+							blocks[16*16*i+16*j+k]= new GrassBlock(i, k, j);
+							blocks[16*16*i+16*j+k].isTop(false);
+						}
+						if(k == 10)
+							blocks[16*16*i+16*j+k]= new GrassBlock(i, k, j);
+					}
 				}
 			}
 		}
+		
+		
 	}
 	
 	private void createDisplayList(){

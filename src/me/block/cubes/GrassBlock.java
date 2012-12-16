@@ -1,5 +1,7 @@
 package me.block.cubes;
 
+import me.block.util.MyTextureLoader;
+
 import org.lwjgl.util.vector.Vector3f;
 
 public class GrassBlock extends Block{
@@ -7,21 +9,22 @@ public class GrassBlock extends Block{
 	public GrassBlock(Vector3f coord){
 		super(coord);
 		
-		this.top = 1;
-		this.bottom = 2;
-		this.side = 0;
-		if(coord.y < 0)
-			this.side = 2;
+		this.top = MyTextureLoader.GRASS_TOP;
+		this.bottom = MyTextureLoader.GRASS_BOTTOM;
+		this.side = MyTextureLoader.GRASS_SIDE;
+		
 	}
 	
 	public GrassBlock(float x, float y, float z){
 		this(new Vector3f(x,y, z));
 	}
 	
-	public void isOverground(boolean b){
+	public void isTop(boolean b){
 		if(b)
-			side = 0;
-		else
-			side = 2;
+			side = MyTextureLoader.GRASS_SIDE;
+		else{
+			side = MyTextureLoader.GRASS_BOTTOM;
+			top = MyTextureLoader.GRASS_BOTTOM;
+		}
 	}
 }

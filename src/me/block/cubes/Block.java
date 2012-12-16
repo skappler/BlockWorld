@@ -241,5 +241,5 @@ public abstract class Block {
 		return this.isSolid;
 	}
 	
-	public abstract void isOverground(boolean b);
+	public abstract void isTop(boolean b);
 }

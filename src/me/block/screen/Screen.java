@@ -12,11 +12,13 @@ import me.block.level.Level;
 
 public class Screen {
 
-	Level level;
+	private Level level;
+	private Player player;
 	
 	public Screen(){
 		
-		level = new Level(new Player());
+		player = new Player();
+		level = new Level(player);
 		
 	}
 	

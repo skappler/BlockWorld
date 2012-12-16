@@ -17,6 +17,11 @@ import org.newdawn.slick.opengl.TextureLoader;
  */
 
 public class MyTextureLoader {
+	
+	//Static values that map a Texture to it position
+	public static final byte GRASS_SIDE = 0;
+	public static final byte GRASS_TOP = 1;
+	public static final byte GRASS_BOTTOM = 2;
 
 	// Static Textures to prevent using too much memory
 	// The single Sprites can be accesed by their position 

@@ -27,7 +27,7 @@ public class Level {
 
 		this.player = p;
 		this.chunks = new ArrayList<Chunk>();
-		
+	
 		this.chunks.add(new Chunk());
 
 	}
@@ -40,7 +40,7 @@ public class Level {
 		glRotatef(player.camera.rotation.z, 0, 0, 1);
 
 		glTranslatef(-player.camera.position.x,
-				-(player.camera.position.y + player.height),
+				-player.camera.position.y,
 				-player.camera.position.z);
 
 		player.render();
