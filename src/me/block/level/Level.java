@@ -19,7 +19,7 @@ import static org.lwjgl.opengl.GL11.*;
 public class Level {
 
 	private Player player;
-	private ArrayList<Chunk> chunks;
+	public ArrayList<Chunk> chunks;
 	private Chunk currentChunk;
 	
 
@@ -28,7 +28,9 @@ public class Level {
 		this.player = p;
 		this.chunks = new ArrayList<Chunk>();
 	
-		this.chunks.add(new Chunk());
+		this.chunks.add(new Chunk(0,0,this));
+		this.chunks.add(new Chunk(1,0,this));
+		
 
 	}
 
@@ -50,6 +52,22 @@ public class Level {
 			c.render();
 		}
 
+	}
+	
+	public Chunk getChunkAt(float x, float z){
+		
+		Chunk ret = null;
+		
+		float cx = (float) Math.floor( x / 16);
+		float cz = (float) Math.floor( z / 16);
+				
+		for(Chunk c : chunks){
+			if(c.getCoordinates().x == cx && c.getCoordinates().z == cz)
+				ret = c;
+		}
+		
+		return ret;
+		
 	}
 
 	public void update() {

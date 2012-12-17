@@ -19,7 +19,8 @@ public class Screen {
 		
 		player = new Player();
 		level = new Level(player);
-		
+		player.setLevel(level);
+		player.checkChunk();
 	}
 	
 	public void render(){
@@ -30,4 +31,8 @@ public class Screen {
 		level.update();
 	}
 	
+	public void changeLevel(Level newLevel){
+		this.level = newLevel;
+		player.setLevel(newLevel);
+	}
 }

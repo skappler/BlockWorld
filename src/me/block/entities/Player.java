@@ -43,7 +43,9 @@ public class Player extends Entity {
 		this.position.y = 8.0f;
 		camera.position.x = this.position.x;
 		camera.position.z = this.position.z;
-		camera.position.y = this.position.y + height ;
+		camera.position.y = this.position.y + height;
+		
+		
 	}
 
 	@Override
@@ -76,7 +78,7 @@ public class Player extends Entity {
 		if (this.rotation.x > 85)
 			this.rotation.x = 85;
 
-		Display.setTitle("" + this.position.x + " "+this.position.y+" " + this.position.z+"  "+this.camera.position.y);
+//		Display.setTitle("" + this.position.x + " "+this.position.y+" " + this.position.z);
 
 		this.rotation.y += Mouse.getDX() * Game.MOUSESPEED;
 		if (this.rotation.y > 360)
@@ -121,7 +123,10 @@ public class Player extends Entity {
 
 		}
 
+		checkChunk();
 		
 	}
 
+	
+	
 }
