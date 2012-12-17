@@ -12,6 +12,7 @@
 /.classpath
 /.project
 /.settings
+/bin
 
 # Maven (in case of future use) #
 /target

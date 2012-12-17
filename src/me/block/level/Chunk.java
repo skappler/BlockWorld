@@ -115,7 +115,10 @@ public class Chunk {
 			return blocks[16*16*ax + 16*ay + az];
 		}
 		
-		return level.getChunkAt(x, z).getBlock(x, y, z);
+		Chunk tmp = level.getChunkAt(x, z);
+		if(tmp == null)
+			return null;
+		return tmp.getBlock(x, y, z);
 		
 	}
 	
