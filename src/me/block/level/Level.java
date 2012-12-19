@@ -29,7 +29,8 @@ public class Level {
 		this.chunks = new ArrayList<Chunk>();
 	
 		this.chunks.add(new Chunk(0,0,this));
-		this.chunks.add(new Chunk(1,0,this));
+//		this.chunks.add(new Chunk(1, 0, this));
+//		this.chunks.add(new Chunk(-1,0,this));
 		
 
 	}
@@ -71,7 +72,7 @@ public class Level {
 	}
 
 	public void update() {
-
+		
 		player.update();
 
 	}

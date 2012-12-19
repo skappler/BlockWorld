@@ -53,11 +53,11 @@ public abstract class Entity {
 
 		currentChunk = level.getChunkAt(position.x, position.z);
 
-		if (currentChunk == null)
-			Display.setTitle("NULL");
-		else
-			Display.setTitle(currentChunk.getCoordinates().x + " "
-					+ currentChunk.getCoordinates().z);
+		// if (currentChunk == null)
+		// Display.setTitle("NULL");
+		// else
+		// Display.setTitle(currentChunk.getCoordinates().x + " "
+		// + currentChunk.getCoordinates().z);
 
 	}
 }

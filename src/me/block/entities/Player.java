@@ -6,6 +6,7 @@ import org.lwjgl.opengl.Display;
 
 import me.block.Game;
 import me.block.camera.Camera;
+import me.block.cubes.Block;
 
 /**
  * 
@@ -29,11 +30,9 @@ public class Player extends Entity {
 	public Camera camera;
 	private int tick = 0;
 
-	//Special Purpose Variables
+	// Special Purpose Variables
 	public float bobbing = 0;
 
-	
-	
 	public Player() {
 		super();
 
@@ -44,25 +43,23 @@ public class Player extends Entity {
 		camera.position.x = this.position.x;
 		camera.position.z = this.position.z;
 		camera.position.y = this.position.y + height;
-		
-		
+
 	}
 
 	@Override
 	public void update() {
 
-		 tick++;
-//		 bobbing += Math.sin(tick/5)/75;
+		// Block b = currentChunk.getBlock(0, -1, 0);
+		// if(b==null)
+		// System.out.println("korrekt");
+		//
+
+		tick++;
+		// bobbing += Math.sin(tick/5)/75;
 
 		handleInput();
-		
-		camera.rotation.x = this.rotation.x;
-		camera.rotation.y = this.rotation.y;
-		camera.rotation.z = this.rotation.z;
+		setCamera();
 
-		camera.position.x = this.position.x;
-		camera.position.z = this.position.z;
-		camera.position.y = this.position.y + height ; //Set the camera position
 	}
 
 	@Override
@@ -78,7 +75,8 @@ public class Player extends Entity {
 		if (this.rotation.x > 85)
 			this.rotation.x = 85;
 
-//		Display.setTitle("" + this.position.x + " "+this.position.y+" " + this.position.z);
+		Display.setTitle("" + this.position.x + " " + this.position.y + " "
+				+ this.position.z);
 
 		this.rotation.y += Mouse.getDX() * Game.MOUSESPEED;
 		if (this.rotation.y > 360)
@@ -124,9 +122,19 @@ public class Player extends Entity {
 		}
 
 		checkChunk();
-		
+
 	}
 
-	
-	
+	public void setCamera() {
+
+		camera.rotation.x = this.rotation.x;
+		camera.rotation.y = this.rotation.y;
+		camera.rotation.z = this.rotation.z;
+
+		camera.position.x = this.position.x;
+		camera.position.z = this.position.z;
+		camera.position.y = this.position.y + height; // Set the camera position
+
+	}
+
 }

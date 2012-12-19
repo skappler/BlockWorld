@@ -4,7 +4,6 @@ import me.block.util.MyTextureLoader;
 
 import org.lwjgl.util.vector.Vector3f;
 
-
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -18,7 +17,7 @@ import static org.lwjgl.opengl.GL11.*;
  *         top back left corner of the cube
  */
 
-public abstract class Block {
+public class Block {
 
 	// The block ID identifies a block distinct
 	public static byte GRASS = 0x01;
@@ -105,9 +104,6 @@ public abstract class Block {
 		glVertex3f(x + 1, y, z + 1);
 		glTexCoord2f(sideTextureX, sideTextureY);
 		glVertex3f(x, y, z + 1);
-		
-		
-		
 
 		// LEFT
 		glNormal3f(-1, 0, 0);
@@ -130,9 +126,7 @@ public abstract class Block {
 		glVertex3f(x + 1, y - 1, z);
 		glTexCoord2f(sideTextureX, sideTextureY);
 		glVertex3f(x + 1, y, z);
-		
-		
-		
+
 		glEnd();
 
 	}
@@ -153,83 +147,76 @@ public abstract class Block {
 
 		float delta = (float) (1.0 / MyTextureLoader.SPRITESHEETWIDTH);
 
-//		if(x == 15f && z == 15f){
-//			 topTextureX = bottom / MyTextureLoader.SPRITESHEETWIDTH;
-//			 topTextureY = bottom % MyTextureLoader.SPRITESHEETWIDTH;
-//		}
-		
+		// if(x == 15f && z == 15f){
+		// topTextureX = bottom / MyTextureLoader.SPRITESHEETWIDTH;
+		// topTextureY = bottom % MyTextureLoader.SPRITESHEETWIDTH;
+		// }
+
 		// TOP
-				glNormal3f(0f, 1f, 0f);
-				glTexCoord2f(topTextureX, topTextureY);
-				glVertex3f(x, y, z);
-				glTexCoord2f(topTextureX, topTextureY + delta);
-				glVertex3f(x, y, z + 1);
-				glTexCoord2f(topTextureX + delta, topTextureY + delta);
-				glVertex3f(x + 1, y, z + 1);
-				glTexCoord2f(topTextureX + delta, topTextureY);
-				glVertex3f(x + 1, y, z);
+		glNormal3f(0f, 1f, 0f);
+		glTexCoord2f(topTextureX, topTextureY);
+		glVertex3f(x, y, z);
+		glTexCoord2f(topTextureX, topTextureY + delta);
+		glVertex3f(x, y, z + 1);
+		glTexCoord2f(topTextureX + delta, topTextureY + delta);
+		glVertex3f(x + 1, y, z + 1);
+		glTexCoord2f(topTextureX + delta, topTextureY);
+		glVertex3f(x + 1, y, z);
 
-				// BOTTOM
-				glNormal3f(0f, -1f, 0f);
-				glTexCoord2f(bottomTextureX, bottomTextureY);
-				glVertex3f(x, y - 1, z);
-				glTexCoord2f(bottomTextureX, bottomTextureY + delta);
-				glVertex3f(x, y - 1, z + 1);
-				glTexCoord2f(bottomTextureX + delta, bottomTextureY + delta);
-				glVertex3f(x + 1, y - 1, z + 1);
-				glTexCoord2f(bottomTextureX + delta, bottomTextureY);
-				glVertex3f(x + 1, y - 1, z);
+		// BOTTOM
+		glNormal3f(0f, -1f, 0f);
+		glTexCoord2f(bottomTextureX, bottomTextureY);
+		glVertex3f(x, y - 1, z);
+		glTexCoord2f(bottomTextureX, bottomTextureY + delta);
+		glVertex3f(x, y - 1, z + 1);
+		glTexCoord2f(bottomTextureX + delta, bottomTextureY + delta);
+		glVertex3f(x + 1, y - 1, z + 1);
+		glTexCoord2f(bottomTextureX + delta, bottomTextureY);
+		glVertex3f(x + 1, y - 1, z);
 
-				// BACK
-				glNormal3f(0, 0, -1);
-				glTexCoord2f(sideTextureX, sideTextureY);
-				glVertex3f(x, y, z);
-				glTexCoord2f(sideTextureX + delta, sideTextureY);
-				glVertex3f(x + 1, y, z);
-				glTexCoord2f(sideTextureX + delta, sideTextureY + delta);
-				glVertex3f(x + 1, y - 1, z);
-				glTexCoord2f(sideTextureX, sideTextureY + delta);
-				glVertex3f(x, y - 1, z);
+		// BACK
+		glNormal3f(0, 0, -1);
+		glTexCoord2f(sideTextureX, sideTextureY);
+		glVertex3f(x, y, z);
+		glTexCoord2f(sideTextureX + delta, sideTextureY);
+		glVertex3f(x + 1, y, z);
+		glTexCoord2f(sideTextureX + delta, sideTextureY + delta);
+		glVertex3f(x + 1, y - 1, z);
+		glTexCoord2f(sideTextureX, sideTextureY + delta);
+		glVertex3f(x, y - 1, z);
 
-				// FRONT
-				glNormal3f(0, 0, 1);
-				glTexCoord2f(sideTextureX, sideTextureY + delta);
-				glVertex3f(x, y - 1, z + 1);
-				glTexCoord2f(sideTextureX + delta, sideTextureY + delta);
-				glVertex3f(x + 1, y - 1, z + 1);
-				glTexCoord2f(sideTextureX + delta, sideTextureY);
-				glVertex3f(x + 1, y, z + 1);
-				glTexCoord2f(sideTextureX, sideTextureY);
-				glVertex3f(x, y, z + 1);
-				
-				
-				
+		// FRONT
+		glNormal3f(0, 0, 1);
+		glTexCoord2f(sideTextureX, sideTextureY + delta);
+		glVertex3f(x, y - 1, z + 1);
+		glTexCoord2f(sideTextureX + delta, sideTextureY + delta);
+		glVertex3f(x + 1, y - 1, z + 1);
+		glTexCoord2f(sideTextureX + delta, sideTextureY);
+		glVertex3f(x + 1, y, z + 1);
+		glTexCoord2f(sideTextureX, sideTextureY);
+		glVertex3f(x, y, z + 1);
 
-				// LEFT
-				glNormal3f(-1, 0, 0);
-				glTexCoord2f(sideTextureX, sideTextureY);
-				glVertex3f(x, y, z);
-				glTexCoord2f(sideTextureX, sideTextureY + delta);
-				glVertex3f(x, y - 1, z);
-				glTexCoord2f(sideTextureX + delta, sideTextureY + delta);
-				glVertex3f(x, y - 1, z + 1);
-				glTexCoord2f(sideTextureX + delta, sideTextureY);
-				glVertex3f(x, y, z + 1);
+		// LEFT
+		glNormal3f(-1, 0, 0);
+		glTexCoord2f(sideTextureX, sideTextureY);
+		glVertex3f(x, y, z);
+		glTexCoord2f(sideTextureX, sideTextureY + delta);
+		glVertex3f(x, y - 1, z);
+		glTexCoord2f(sideTextureX + delta, sideTextureY + delta);
+		glVertex3f(x, y - 1, z + 1);
+		glTexCoord2f(sideTextureX + delta, sideTextureY);
+		glVertex3f(x, y, z + 1);
 
-				// RIGHT
-				glNormal3f(1, 0, 0);
-				glTexCoord2f(sideTextureX + delta, sideTextureY);
-				glVertex3f(x + 1, y, z + 1);
-				glTexCoord2f(sideTextureX + delta, sideTextureY + delta);
-				glVertex3f(x + 1, y - 1, z + 1);
-				glTexCoord2f(sideTextureX, sideTextureY + delta);
-				glVertex3f(x + 1, y - 1, z);
-				glTexCoord2f(sideTextureX, sideTextureY);
-				glVertex3f(x + 1, y, z);
-				
-		
-		
-		
+		// RIGHT
+		glNormal3f(1, 0, 0);
+		glTexCoord2f(sideTextureX + delta, sideTextureY);
+		glVertex3f(x + 1, y, z + 1);
+		glTexCoord2f(sideTextureX + delta, sideTextureY + delta);
+		glVertex3f(x + 1, y - 1, z + 1);
+		glTexCoord2f(sideTextureX, sideTextureY + delta);
+		glVertex3f(x + 1, y - 1, z);
+		glTexCoord2f(sideTextureX, sideTextureY);
+		glVertex3f(x + 1, y, z);
 
 	}
 
@@ -240,6 +227,12 @@ public abstract class Block {
 	public boolean isSolid() {
 		return this.isSolid;
 	}
-	
-	public abstract void isTop(boolean b);
+
+	public void isTop(boolean b) {
+
+	}
+
+	public Vector3f getCoordinates() {
+		return this.coordinate;
+	}
 }
