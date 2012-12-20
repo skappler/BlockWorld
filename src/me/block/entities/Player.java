@@ -40,24 +40,20 @@ public class Player extends Entity {
 		this.speed = 0.1f;
 		this.height = BASE_HEIGHT;
 		this.position.y = 8.0f;
-		camera.position.x = this.position.x;
-		camera.position.z = this.position.z;
-		camera.position.y = this.position.y + height;
+		this.position.x = 8.0f;
+		this.position.z = 8.0f;
 
+		setCamera();
 	}
 
 	@Override
 	public void update() {
 
-		// Block b = currentChunk.getBlock(0, -1, 0);
-		// if(b==null)
-		// System.out.println("korrekt");
-		//
-
 		tick++;
 		// bobbing += Math.sin(tick/5)/75;
 
 		handleInput();
+		gravity();
 		setCamera();
 
 	}
@@ -65,6 +61,31 @@ public class Player extends Entity {
 	@Override
 	public void render() {
 
+	}
+
+	public void gravity() {
+
+		Block under = null;
+
+		try {
+			under = currentChunk.getBlock((int) position.x,
+					(int) position.y - 1, (int) position.z);
+		} catch (NullPointerException e) {
+			under = null;
+		}
+
+		if (under == null) {
+			position.y -= speed;
+		} else {
+
+			if (position.y > under.getCoordinates().y + 1)
+				position.y -= speed;
+			if (position.y < under.getCoordinates().y + 1)
+				position.y = under.getCoordinates().y + 1;
+		}
+
+		if (position.y < -8)
+			position.y = 16.0f;
 	}
 
 	public void handleInput() {
@@ -84,7 +105,7 @@ public class Player extends Entity {
 		if (this.rotation.y < 0)
 			this.rotation.y += 360;
 
-		this.height = BASE_HEIGHT;
+//		this.height = BASE_HEIGHT;
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
 			this.position.x += (float) Math
@@ -120,7 +141,11 @@ public class Player extends Entity {
 			this.height = BASE_HEIGHT + bobbing;
 
 		}
-
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
+			position.y += 2*speed;
+			System.out.println("SPACE");
+		}
 		checkChunk();
 
 	}

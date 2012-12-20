@@ -4,14 +4,12 @@ import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
-import static org.lwjgl.opengl.GL11.glTexParameteri;
 import me.block.cubes.Block;
 import me.block.cubes.GrassBlock;
 import me.block.util.MyTextureLoader;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
-import org.newdawn.slick.state.transition.VerticalSplitTransition;
 
 /**
  * 
@@ -32,8 +30,8 @@ public class Chunk {
 	private int displayList;
 	private Level level;
 
-	public Chunk(int x, int y, Level l) {
-		coordinates = new Vector3f(x, y, 0);
+	public Chunk(int x, int z, Level l) {
+		coordinates = new Vector3f(x, 0, z);
 		level = l;
 		blocks = new Block[16 * 16 * 16];
 
@@ -91,8 +89,12 @@ public class Chunk {
 					float x = i + coordinates.x * 16;
 					float z = j + coordinates.z * 16;
 					
-					blocks[16*16*i+16*k+j] = new GrassBlock(x, k, z);
-					
+					if(k == 4 && i == 6 && (j==4 || j == 3)){
+						blocks[16*16*i+16*k+j] = null;
+
+					}else{
+						blocks[16*16*i+16*k+j] = new GrassBlock(x, k, z);
+					}
 				}
 			}
 		}
