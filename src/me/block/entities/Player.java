@@ -28,16 +28,30 @@ public class Player extends Entity {
 
 	// General variables
 	public Camera camera;
-	private int tick = 0;
+	private long tick = 0;
 
 	// Special Purpose Variables
-	public float bobbing = 0;
+	private float bobbing = 0;
+	
+	private float gravitySpeed;
+	
+	private float jumpSpeed;
+	private float maxJump = 3.3f;
+	private float currentJump = 0f;
+	private boolean jumping = false;
+	private boolean jumpKey = false;
+	private boolean readyToJump = true;
+	
+	private float trueSpeed;
 
 	public Player() {
 		super();
-
+		
 		this.camera = new Camera();
-		this.speed = 0.1f;
+		this.speed = 0.08f;
+		this.jumpSpeed=  (float) (3.*speed);
+		this.gravitySpeed = (float) (1.5*speed);
+		this.trueSpeed = speed;
 		this.height = BASE_HEIGHT;
 		this.position.y = 8.0f;
 		this.position.x = 8.0f;
@@ -53,6 +67,7 @@ public class Player extends Entity {
 		// bobbing += Math.sin(tick/5)/75;
 
 		handleInput();
+		jump();
 		gravity();
 		setCamera();
 
@@ -75,13 +90,16 @@ public class Player extends Entity {
 		}
 
 		if (under == null) {
-			position.y -= speed;
+			position.y -= gravitySpeed;
 		} else {
 
 			if (position.y > under.getCoordinates().y + 1)
-				position.y -= speed;
-			if (position.y < under.getCoordinates().y + 1)
+				position.y -= gravitySpeed;
+			if (position.y <= under.getCoordinates().y + 1){
 				position.y = under.getCoordinates().y + 1;
+				readyToJump = true;
+
+			}
 		}
 
 		if (position.y < -8)
@@ -109,47 +127,77 @@ public class Player extends Entity {
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
 			this.position.x += (float) Math
-					.sin(Math.toRadians(this.rotation.y)) * speed;
+					.sin(Math.toRadians(this.rotation.y)) * trueSpeed;
 			this.position.z += -(float) Math.cos(Math
-					.toRadians(this.rotation.y)) * speed;
+					.toRadians(this.rotation.y)) * trueSpeed;
 			this.height = BASE_HEIGHT + bobbing;
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
 			this.position.x -= (float) Math
-					.sin(Math.toRadians(this.rotation.y)) * speed;
+					.sin(Math.toRadians(this.rotation.y)) * trueSpeed;
 			this.position.z -= -(float) Math.cos(Math
-					.toRadians(this.rotation.y)) * speed;
+					.toRadians(this.rotation.y)) * trueSpeed;
 			this.height = BASE_HEIGHT + bobbing;
 
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
 			this.position.x += (float) Math.sin(Math
-					.toRadians(this.rotation.y + 90)) * speed;
+					.toRadians(this.rotation.y + 90)) * trueSpeed;
 			this.position.z += -(float) Math.cos(Math
-					.toRadians(this.rotation.y + 90)) * speed;
+					.toRadians(this.rotation.y + 90)) * trueSpeed;
 			this.height = BASE_HEIGHT + bobbing;
 
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
 			this.position.x += (float) Math.sin(Math
-					.toRadians(this.rotation.y - 90)) * speed;
+					.toRadians(this.rotation.y - 90)) * trueSpeed;
 			this.position.z += -(float) Math.cos(Math
-					.toRadians(this.rotation.y - 90)) * speed;
+					.toRadians(this.rotation.y - 90)) * trueSpeed;
 			this.height = BASE_HEIGHT + bobbing;
 
 		}
 		
-		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
-			position.y += 2*speed;
-			System.out.println("SPACE");
+		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
+			this.trueSpeed = (float) (1.8*speed);
+		}else{
+			this.trueSpeed = speed;
 		}
+		
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
+			if(!jumpKey ){
+				jumping = true;
+			}
+			jumpKey = true;
+
+		}else{
+			jumpKey = false;
+		}
+		
 		checkChunk();
 
 	}
 
+	private void jump(){
+		
+		if( jumping || (readyToJump && jumpKey)){
+					
+			jumping = true;
+			readyToJump = false;
+			position.y += jumpSpeed;
+			currentJump += jumpSpeed;
+			
+			if(currentJump >= maxJump){
+				jumping = false;
+				currentJump = 0f;
+			}
+		}	
+	}
+	
+	
 	public void setCamera() {
 
 		camera.rotation.x = this.rotation.x;

@@ -1,0 +1,10 @@
+TODO:	Finish Jumping [FINISHED]
+	Fix BUGS
+	Add collision
+	Add Fog
+	Add Sky
+
+BUG: 	Chunk with negative coordinates got weird block coordinates
+	Chunk with negative y coordinate is at the wrong position [FIXED]
+
+MINOR: 	Adjust speed when walking diagonal

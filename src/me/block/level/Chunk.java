@@ -80,27 +80,35 @@ public class Chunk {
 
 	}
 
-	public void loadExampleChunk1(){
-		
-		for(int i = 0; i < 16; i++){ //x
-			for(int j = 0; j < 16; j++){ //z
-				for(int k = 0; k < 5; k++){ //y
+	public void loadExampleChunk1() {
+
+		for (int i = 0; i < 16; i++) { // x
+			for (int j = 0; j < 16; j++) { // z
+				for (int k = 0; k < 5; k++) { // y
 
 					float x = i + coordinates.x * 16;
 					float z = j + coordinates.z * 16;
-					
-					if(k == 4 && i == 6 && (j==4 || j == 3)){
-						blocks[16*16*i+16*k+j] = null;
 
-					}else{
-						blocks[16*16*i+16*k+j] = new GrassBlock(x, k, z);
+					if (k == 4 && i == 6 && (j == 4 || j == 3)) {
+						blocks[16 * 16 * i + 16 * k + j] = null;
+
+					} else {
+						blocks[16 * 16 * i + 16 * k + j] = new GrassBlock(x, k,
+								z);
 					}
 				}
 			}
 		}
-		
+
+		blocks[16 * 16 * 5 + 16 * 5 + 5] = new GrassBlock(
+				coordinates.x * 16 + 5, 5, coordinates.z * 16 + 5);
+		blocks[16 * 16 * 5 + 16 * 6 + 5] = new GrassBlock(
+				coordinates.x * 16 + 5, 6, coordinates.z * 16 + 5);
+		blocks[16 * 16 * 5 + 16 * 5 + 6] = new GrassBlock(
+				coordinates.x * 16 + 5, 5, coordinates.z * 16 + 6);
+
 	}
-	
+
 	private void createDisplayList() {
 
 		GL11.glNewList(displayList, GL11.GL_COMPILE);
