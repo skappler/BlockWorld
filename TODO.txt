@@ -1,10 +1,12 @@
-TODO:	Finish Jumping [FINISHED]
-	Fix BUGS
+TODO:	Finish Jumping 	[FINISHED]
+	Fix BUGS	
 	Add collision
 	Add Fog
 	Add Sky
+	Add Lighting
 
-BUG: 	Chunk with negative coordinates got weird block coordinates
+BUG: 	Chunk with negative coordinates got weird block coordinates [FIXED]
 	Chunk with negative y coordinate is at the wrong position [FIXED]
+	Certain Chunk patterns cause stackoverflow (may be negative chunk coords < -2)
 
 MINOR: 	Adjust speed when walking diagonal

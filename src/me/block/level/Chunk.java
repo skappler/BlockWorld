@@ -86,27 +86,42 @@ public class Chunk {
 			for (int j = 0; j < 16; j++) { // z
 				for (int k = 0; k < 5; k++) { // y
 
-					float x = i + coordinates.x * 16;
-					float z = j + coordinates.z * 16;
+//					float x = i + coordinates.x * 16;
+//					float z = j + coordinates.z * 16;
 
 					if (k == 4 && i == 6 && (j == 4 || j == 3)) {
 						blocks[16 * 16 * i + 16 * k + j] = null;
 
 					} else {
-						blocks[16 * 16 * i + 16 * k + j] = new GrassBlock(x, k,
-								z);
+						addBlock(i, k, j);
+//						blocks[16 * 16 * i + 16 * k + j] = new GrassBlock(x, k,
+//								z);
 					}
 				}
 			}
 		}
 
-		blocks[16 * 16 * 5 + 16 * 5 + 5] = new GrassBlock(
-				coordinates.x * 16 + 5, 5, coordinates.z * 16 + 5);
-		blocks[16 * 16 * 5 + 16 * 6 + 5] = new GrassBlock(
-				coordinates.x * 16 + 5, 6, coordinates.z * 16 + 5);
-		blocks[16 * 16 * 5 + 16 * 5 + 6] = new GrassBlock(
-				coordinates.x * 16 + 5, 5, coordinates.z * 16 + 6);
+//		blocks[16 * 16 * 5 + 16 * 5 + 5] = new GrassBlock(
+//				coordinates.x * 16 + 5, 5, coordinates.z * 16 + 5);
+//		blocks[16 * 16 * 5 + 16 * 6 + 5] = new GrassBlock(
+//				coordinates.x * 16 + 5, 6, coordinates.z * 16 + 5);
+//		blocks[16 * 16 * 5 + 16 * 5 + 6] = new GrassBlock(
+//				coordinates.x * 16 + 5, 5, coordinates.z * 16 + 6);
+		
+		addBlock(5, 5, 5);
+		addBlock(5, 6, 5);
+		addBlock(5, 5, 6);
 
+	}
+	
+	private void addBlock(int x, int y, int z){
+		
+		float xx = x + coordinates.x * 16;
+		float yy = y;
+		float zz = z + coordinates.z*16;
+		
+		blocks[16*16*x + 16*y + z] = new GrassBlock(xx, yy, zz);
+		
 	}
 
 	private void createDisplayList() {
@@ -140,6 +155,12 @@ public class Chunk {
 		int y = (int) posB.y;
 		int z = (int) posB.z;
 
+		if(posB.x < 0)
+			x++;
+		
+		if(posB.z < 0)
+			z++;
+		
 		// The bools below are true if the side is Visible
 		boolean up = (getBlock(x, y + 1, z) == null);
 		boolean down = (getBlock(x, y - 1, z) == null);
@@ -162,17 +183,22 @@ public class Chunk {
 		float cz = (float) Math.floor(z / 16);
 		float cy = (float) Math.floor(y / 16);
 
-		if (x < 0)
-			cx--;
-		if (z < 0)
-			cz--;
+		
 
 		// System.out.println(cx+" "+cy+" "+cz);
 
-		int ax = Math.abs(x % 16);
-		int ay = Math.abs(y % 16);
-		int az = Math.abs(z % 16);
-
+		int ax = (int) (x - coordinates.x*16);
+		int ay = y;
+		int az = (int) (z - coordinates.z * 16);
+		
+		if (x < 0){
+			cx--;
+			ax--;
+		}
+		if (z < 0){
+			cz--;
+			az--;
+		}
 		// System.out.println(ax+" "+ay+" "+az);
 
 		if (coordinates.x == cx && coordinates.z == cz) {
