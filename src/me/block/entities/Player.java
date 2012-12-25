@@ -114,8 +114,8 @@ public class Player extends Entity {
 		if (this.rotation.x > 85)
 			this.rotation.x = 85;
 
-//		Display.setTitle("" + this.position.x + " " + this.position.y + " "
-//				+ this.position.z);
+		Display.setTitle("" + this.position.x + " " + this.position.y + " "
+				+ this.position.z);
 
 		this.rotation.y += Mouse.getDX() * Game.MOUSESPEED;
 		if (this.rotation.y > 360)
@@ -175,6 +175,16 @@ public class Player extends Entity {
 
 		}else{
 			jumpKey = false;
+		}
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_F)){
+			System.out.println("F");
+			System.out.println(currentChunk.getBlock(23, 3, -16).getCoordinates().toString());
+			currentChunk.checkVisible(currentChunk.getBlock(23, 3, -16));
+			
+//			System.out.println(currentChunk.getBlock(18, 3, -16).getCoordinates().toString());
+//			System.out.println(currentChunk.getBlock(18, 3, -17).getCoordinates().toString());
+
 		}
 		
 		checkChunk();
