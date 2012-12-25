@@ -179,33 +179,33 @@ public class Chunk {
 		if (y < 0 || y > 16)
 			return null;
 
-		float cx = (float) Math.floor(x / 16);
-		float cz = (float) Math.floor(z / 16);
-		float cy = (float) Math.floor(y / 16);
-
+		float xx = (float) x;
+		float zz = (float) z;
 		
-
-		// System.out.println(cx+" "+cy+" "+cz);
+		float cx = (float) Math.floor(xx / 16);
+		float cz = (float) Math.floor(zz / 16);
+//		float cy = (float) Math.floor(y / 16);		
 
 		int ax = (int) (x - coordinates.x*16);
 		int ay = y;
 		int az = (int) (z - coordinates.z * 16);
 		
 		if (x < 0){
-			cx--;
 			ax--;
+			ax = Math.abs(ax);
 		}
 		if (z < 0){
-			cz--;
 			az--;
+			az = Math.abs(az);
+
 		}
-		// System.out.println(ax+" "+ay+" "+az);
 
 		if (coordinates.x == cx && coordinates.z == cz) {
 			return blocks[16 * 16 * ax + 16 * ay + az];
 		}
 
 		Chunk tmp = level.getChunkAt(x, z);
+				
 		if (tmp == null)
 			return null;
 		return tmp.getBlock(x, y, z);

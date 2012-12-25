@@ -28,14 +28,15 @@ public class Level {
 		this.player = p;
 		this.chunks = new ArrayList<Chunk>();
 	
-//		this.chunks.add(new Chunk(0,0,this));
-//		this.chunks.add(new Chunk(1, 0, this));
-//		this.chunks.add(new Chunk(1,1,this));
-//		this.chunks.add(new Chunk(0,-2,this));
-
+		this.chunks.add(new Chunk(1,-1,this));
+//		this.chunks.add(new Chunk(0, -1, this));
+//		this.chunks.add(new Chunk(-1,0,this));
+//		this.chunks.add(new Chunk(0,1,this));
+//		this.chunks.add(new Chunk(1,0,this));
+		
 		for(int i = 0; i < 2;i++){
 			for(int j = -2; j < 1;j++){
-				this.chunks.add(new Chunk(i,j,this));
+//				this.chunks.add(new Chunk(i,j,this));
 			}
 		}
 		

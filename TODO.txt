@@ -7,6 +7,8 @@ TODO:	Finish Jumping 	[FINISHED]
 
 BUG: 	Chunk with negative coordinates got weird block coordinates [FIXED]
 	Chunk with negative y coordinate is at the wrong position [FIXED]
-	Certain Chunk patterns cause stackoverflow (may be negative chunk coords < -2)
+	Certain Chunk patterns cause stackoverflow [FIXED]
+	Chunks with negative coordinates remove wrong side for rendering
 
 MINOR: 	Adjust speed when walking diagonal
+	Multiple jumping

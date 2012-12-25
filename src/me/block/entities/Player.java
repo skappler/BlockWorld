@@ -114,8 +114,8 @@ public class Player extends Entity {
 		if (this.rotation.x > 85)
 			this.rotation.x = 85;
 
-		Display.setTitle("" + this.position.x + " " + this.position.y + " "
-				+ this.position.z);
+//		Display.setTitle("" + this.position.x + " " + this.position.y + " "
+//				+ this.position.z);
 
 		this.rotation.y += Mouse.getDX() * Game.MOUSESPEED;
 		if (this.rotation.y > 360)
