@@ -1,9 +1,12 @@
 package me.block;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
+import me.block.cubes.Block;
 import me.block.screen.Screen;
 import me.block.util.MyTextureLoader;
+import me.block.util.MyUtil;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
@@ -123,7 +126,7 @@ public class Game {
 		glLoadIdentity();
 
 		glShadeModel(GL_SMOOTH);
-		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		glClearColor(0.35f, 0.6f, 0.8f, 1.0f);
 
 		glClearDepth(1.0f);
 		glEnable(GL_DEPTH_TEST);
@@ -132,9 +135,23 @@ public class Game {
 		
 		glEnable(GL_TEXTURE_2D);
 		
+		enableFog();
+		
 //		glEnable(GL_CULL_FACE);
 	}
 
+	public void enableFog(){
+		
+		glFog(GL_FOG_COLOR, MyUtil.allocateFloat(new float[]{0.4f,0.4f,0.4f,1f}));
+		glFogf(GL_FOG_MODE, GL_EXP);
+		glFogf(GL_FOG_DENSITY, .035f);
+		glHint(GL_FOG_HINT, GL_DONT_CARE);
+		glFogf (GL_FOG_START, 10.0f);
+	    glFogf (GL_FOG_END, 40.0f);
+	    glEnable(GL_FOG);
+		
+	}
+	
 	// ########### START THE GAME #######
 
 	public static void main(String[] args) {

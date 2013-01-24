@@ -1,8 +1,13 @@
 package me.block.entities;
 
+
+import java.util.HashSet;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Vector3f;
+import org.newdawn.slick.geom.Rectangle;
 
 import me.block.Game;
 import me.block.camera.Camera;
@@ -43,12 +48,17 @@ public class Player extends Entity {
 	private boolean readyToJump = true;
 	
 	private float trueSpeed;
+	
+	private Vector3f oldPos;
+	
+	boolean thirdPerson = false;
 
 	public Player() {
 		super();
 		
 		this.camera = new Camera();
-		this.speed = 0.08f;
+		this.oldPos = new Vector3f();
+		this.speed = 0.1f;
 		this.jumpSpeed=  (float) (3.*speed);
 		this.gravitySpeed = (float) (1.5*speed);
 		this.trueSpeed = speed;
@@ -67,6 +77,7 @@ public class Player extends Entity {
 		// bobbing += Math.sin(tick/5)/75;
 
 		handleInput();
+//		checkCollision();
 		jump();
 		gravity();
 		setCamera();
@@ -78,13 +89,74 @@ public class Player extends Entity {
 
 	}
 
+	public void checkCollision(){
+		
+		/*
+		 * -> get Blocks in question
+		 * -> check Collision for every block
+		 * -> if true set pos to oldPos
+		 * 
+		 */
+		
+		if(currentChunk == null)
+			return;
+		
+		//Get the player coordinates
+		int x = (int)Math.floor(this.position.x);
+		int y = (int)Math.floor(this.position.y);
+		System.out.println();
+		int z = (int)Math.floor(this.position.z);
+		y--;
+		
+		// Get the blocks
+		HashSet<Block> surrounding = new HashSet<Block>();
+		surrounding.add(currentChunk.getBlock(x-1, y+1, z-1));
+		surrounding.add(currentChunk.getBlock(x-1, y+1, z));
+		surrounding.add(currentChunk.getBlock(x-1, y+1, z+1));
+		surrounding.add(currentChunk.getBlock(x, y+1, z-1));
+		surrounding.add(currentChunk.getBlock(x, y+1, z));
+		surrounding.add(currentChunk.getBlock(x, y+1, z+1));
+		surrounding.add(currentChunk.getBlock(x+1, y+1, z-1));
+		surrounding.add(currentChunk.getBlock(x+1, y+1, z));
+		surrounding.add(currentChunk.getBlock(x+1, y+1, z+1));
+
+		surrounding.add(currentChunk.getBlock(x-1, y+2, z-1));
+		surrounding.add(currentChunk.getBlock(x-1, y+2, z));
+		surrounding.add(currentChunk.getBlock(x-1, y+2, z+1));
+		surrounding.add(currentChunk.getBlock(x, y+2, z-1));
+		surrounding.add(currentChunk.getBlock(x, y+2, z));
+		surrounding.add(currentChunk.getBlock(x, y+2, z+1));
+		surrounding.add(currentChunk.getBlock(x+1, y+2, z-1));
+		surrounding.add(currentChunk.getBlock(x+1, y+2, z));
+		surrounding.add(currentChunk.getBlock(x+1, y+2, z+1));
+		
+		//Check collision for every block
+		
+		boolean collision = false;
+		
+		for(Block b : surrounding){
+			if(b != null && this.getBounds().intersects(b.getBounds())){
+				collision = true;
+				break;
+			}
+		}
+		
+		//Reset position
+		
+		if(collision){
+			this.position.x = oldPos.x;
+			this.position.z = oldPos.z;
+		}
+		
+	}
+	
 	public void gravity() {
 
 		Block under = null;
 
 		try {
-			under = currentChunk.getBlock((int) position.x,
-					(int) position.y - 1, (int) position.z);
+			under = currentChunk.getBlock((int) Math.floor(position.x),
+					(int) Math.floor(position.y - 1), (int) Math.floor(position.z));
 		} catch (NullPointerException e) {
 			under = null;
 		}
@@ -107,6 +179,10 @@ public class Player extends Entity {
 	}
 
 	public void handleInput() {
+		
+		oldPos.x = position.x;
+		oldPos.y = position.y;
+		oldPos.z = position.z;
 
 		this.rotation.x -= Mouse.getDY() * Game.MOUSESPEED;
 		if (this.rotation.x < -85)
@@ -125,6 +201,16 @@ public class Player extends Entity {
 
 //		this.height = BASE_HEIGHT;
 
+		if(Keyboard.isKeyDown(Keyboard.KEY_C)){
+		
+			thirdPerson = false;
+			
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_V)){
+			
+			thirdPerson = true;
+		}	
+		
 		if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
 			this.position.x += (float) Math
 					.sin(Math.toRadians(this.rotation.y)) * trueSpeed;
@@ -132,8 +218,8 @@ public class Player extends Entity {
 					.toRadians(this.rotation.y)) * trueSpeed;
 			this.height = BASE_HEIGHT + bobbing;
 		}
-
-		if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+		
+				if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
 			this.position.x -= (float) Math
 					.sin(Math.toRadians(this.rotation.y)) * trueSpeed;
 			this.position.z -= -(float) Math.cos(Math
@@ -207,6 +293,9 @@ public class Player extends Entity {
 		}	
 	}
 	
+	public Rectangle getBounds(){
+		return new Rectangle((float)(position.x - .75 / 2),(float) (position.z - .75 / 2),(float) .75,(float) .75);
+	}
 	
 	public void setCamera() {
 
@@ -218,6 +307,11 @@ public class Player extends Entity {
 		camera.position.z = this.position.z;
 		camera.position.y = this.position.y + height; // Set the camera position
 
+		if(thirdPerson){
+			//adjust camera POV
+			
+		}
+		
 	}
 
 }

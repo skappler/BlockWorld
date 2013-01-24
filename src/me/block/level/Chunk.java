@@ -26,7 +26,7 @@ import org.lwjgl.util.vector.Vector3f;
 public class Chunk {
 
 	private Vector3f coordinates;
-	private Block[] blocks; // Blockposition is 16*16*x + 16*y + z
+	public Block[] blocks; // Blockposition is 16*16*x + 16*y + z
 	private int displayList;
 	private Level level;
 
@@ -154,17 +154,11 @@ public class Chunk {
 			return false;
 		
 		Vector3f posB = b.getCoordinates();
-		System.out.println("position got " +posB.toString());
+//		System.out.println("position got " +posB.toString());
 		
 		int x = (int) Math.floor( posB.x);
 		int y = (int) Math.floor( posB.y);
 		int z = (int) Math.floor( posB.z);
-
-//		if(posB.x < 0)
-//			x++;
-//		
-//		if(posB.z < 0)
-//			z++;
 		
 		// The bools below are true if the side is Visible
 		boolean up = (getBlock(x, y + 1, z) == null);
@@ -174,9 +168,9 @@ public class Chunk {
 		boolean right = (getBlock(x + 1, y, z) == null);
 		boolean left = (getBlock(x - 1, y - 1, z) == null);
 
-		if(getBlock(x, y, z - 1) != null)
-		System.out.println("neighbour "+z+" "+getBlock(x, y, z - 1).getCoordinates().toString());
-		 System.out.println(up+" "+down+" "+back+" "+front+" "+right+" "+left);
+//		if(getBlock(x, y, z - 1) != null)
+//		System.out.println("neighbour "+z+" "+getBlock(x, y, z - 1).getCoordinates().toString());
+//		 System.out.println(up+" "+down+" "+back+" "+front+" "+right+" "+left);
 
 		return (up || down || back || front || left || right);
 	}
@@ -193,7 +187,7 @@ public class Chunk {
 		float cz = (float) Math.floor(zz / 16);
 //		float cy = (float) Math.floor(y / 16);		
 
-		int ax = x%16;//(int) Math.floor(x - coordinates.x*16);
+		int ax = x % 16;//(int) Math.floor(x - coordinates.x*16);
 		int ay = y;
 		int az = z % 16;//(int) Math.floor(z - coordinates.z * 16);
 		
@@ -204,19 +198,14 @@ public class Chunk {
 			az += 16;
 		}
 		
-//		if (x < 0){
-//			ax--;
-//			ax = Math.abs(ax);
-//			
-//		}
-//		if (z < 0){
-//			az--;
-//			az = Math.abs(az);
-//
-//		}
 
 		if (coordinates.x == cx && coordinates.z == cz) {
-			return blocks[16 * 16 * ax + 16 * ay + az];
+			try {
+				return blocks[16 * 16 * ax + 16 * ay + az];
+			} catch (ArrayIndexOutOfBoundsException e) {
+				System.out.println("ArrayIndexException! Not good, but okay");
+				return null;
+			}
 		}
 
 		Chunk tmp = level.getChunkAt(x, z);

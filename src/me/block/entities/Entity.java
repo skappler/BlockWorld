@@ -1,10 +1,13 @@
 package me.block.entities;
 
+
+
 import me.block.level.Chunk;
 import me.block.level.Level;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
+import org.newdawn.slick.geom.Rectangle;
 
 /**
  * 
@@ -35,6 +38,8 @@ public abstract class Entity {
 	public abstract void update();
 
 	public abstract void render();
+	
+	public abstract Rectangle getBounds();
 
 	public void setLevel(Level l) {
 		this.level = l;

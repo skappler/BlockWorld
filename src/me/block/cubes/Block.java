@@ -3,6 +3,7 @@ package me.block.cubes;
 import me.block.util.MyTextureLoader;
 
 import org.lwjgl.util.vector.Vector3f;
+import org.newdawn.slick.geom.Rectangle;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -230,6 +231,10 @@ public class Block {
 
 	public void isTop(boolean b) {
 
+	}
+	
+	public Rectangle getBounds(){
+		return new Rectangle(coordinate.x, coordinate.z, 1, 1);
 	}
 
 	public Vector3f getCoordinates() {
