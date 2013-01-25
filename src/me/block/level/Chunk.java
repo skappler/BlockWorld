@@ -4,9 +4,10 @@ import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
+import me.block.Game;
 import me.block.cubes.Block;
 import me.block.cubes.GrassBlock;
-import me.block.util.MyTextureLoader;
+import me.block.texture.MyTextureLoader;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
@@ -111,10 +112,13 @@ public class Chunk {
 		addBlock(5, 5, 5);
 		addBlock(5, 6, 5);
 		addBlock(5, 5, 6);
+		
+//		addBlock(2, 7, 2);
+//		addBlock(2, 6, 3);
 
 	}
 	
-	private void addBlock(int x, int y, int z){
+	public void addBlock(int x, int y, int z){
 		
 		float xx = x + coordinates.x * 16;
 		float yy = y;
@@ -123,12 +127,19 @@ public class Chunk {
 		blocks[16*16*x + 16*y + z] = new GrassBlock(xx, yy, zz);
 		
 	}
+	
+	public void removeBlock(int x, int y, int z){
+		
+		blocks[16*16*x + 16*y + z] = null;
+		
+	}
 
 	private void createDisplayList() {
 
 		GL11.glNewList(displayList, GL11.GL_COMPILE);
+		
 		MyTextureLoader.SPRITESHEET.bind();
-
+		
 		GL11.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		GL11.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 

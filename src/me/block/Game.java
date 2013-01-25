@@ -1,11 +1,12 @@
 package me.block;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 
 import me.block.cubes.Block;
 import me.block.screen.Screen;
-import me.block.util.MyTextureLoader;
+import me.block.texture.MyTextureLoader;
 import me.block.util.MyUtil;
 
 import org.lwjgl.LWJGLException;
@@ -13,6 +14,8 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.Log;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -48,7 +51,7 @@ public class Game {
 	// ########## Methods ##############
 
 	public Game() {
-
+		
 	}
 
 	private void start() throws LWJGLException {
@@ -70,6 +73,7 @@ public class Game {
 
 		//Bind the textures and set the Texture paremeter
 		MyTextureLoader.SPRITESHEET.bind();
+
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		
@@ -153,9 +157,11 @@ public class Game {
 	}
 	
 	// ########### START THE GAME #######
-
+	
 	public static void main(String[] args) {
 
+//		System.loadLibrary("jawt");		
+		
 		Game game = new Game();
 
 		try {

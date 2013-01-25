@@ -51,7 +51,6 @@ public class Player extends Entity {
 	
 	private Vector3f oldPos;
 	
-	boolean thirdPerson = false;
 
 	public Player() {
 		super();
@@ -77,7 +76,7 @@ public class Player extends Entity {
 		// bobbing += Math.sin(tick/5)/75;
 
 		handleInput();
-//		checkCollision();
+		checkCollision();
 		jump();
 		gravity();
 		setCamera();
@@ -141,6 +140,8 @@ public class Player extends Entity {
 			}
 		}
 		
+		surrounding = null;
+		
 		//Reset position
 		
 		if(collision){
@@ -201,15 +202,6 @@ public class Player extends Entity {
 
 //		this.height = BASE_HEIGHT;
 
-		if(Keyboard.isKeyDown(Keyboard.KEY_C)){
-		
-			thirdPerson = false;
-			
-		}
-		if(Keyboard.isKeyDown(Keyboard.KEY_V)){
-			
-			thirdPerson = true;
-		}	
 		
 		if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
 			this.position.x += (float) Math
@@ -263,15 +255,15 @@ public class Player extends Entity {
 			jumpKey = false;
 		}
 		
-		if(Keyboard.isKeyDown(Keyboard.KEY_F)){
-			System.out.println("F");
-			System.out.println(currentChunk.getBlock(23, 3, -16).getCoordinates().toString());
-			currentChunk.checkVisible(currentChunk.getBlock(23, 3, -16));
-			
-//			System.out.println(currentChunk.getBlock(18, 3, -16).getCoordinates().toString());
-//			System.out.println(currentChunk.getBlock(18, 3, -17).getCoordinates().toString());
-
-		}
+//		if(Keyboard.isKeyDown(Keyboard.KEY_F)){
+//			System.out.println("F");
+//			System.out.println(currentChunk.getBlock(23, 3, -16).getCoordinates().toString());
+//			currentChunk.checkVisible(currentChunk.getBlock(23, 3, -16));
+//			
+////			System.out.println(currentChunk.getBlock(18, 3, -16).getCoordinates().toString());
+////			System.out.println(currentChunk.getBlock(18, 3, -17).getCoordinates().toString());
+//
+//		}
 		
 		checkChunk();
 
@@ -294,7 +286,8 @@ public class Player extends Entity {
 	}
 	
 	public Rectangle getBounds(){
-		return new Rectangle((float)(position.x - .75 / 2),(float) (position.z - .75 / 2),(float) .75,(float) .75);
+		return new Rectangle(position.x, position.z, 0f, 0f);
+//		return new Rectangle((float)(position.x - .75 / 2),(float) (position.z - .75 / 2),(float) .75,(float) .75);
 	}
 	
 	public void setCamera() {
@@ -307,10 +300,6 @@ public class Player extends Entity {
 		camera.position.z = this.position.z;
 		camera.position.y = this.position.y + height; // Set the camera position
 
-		if(thirdPerson){
-			//adjust camera POV
-			
-		}
 		
 	}
 

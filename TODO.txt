@@ -1,8 +1,7 @@
 TODO:	Finish Jumping 	[FINISHED]
 	Fix BUGS [FINISHED?]	
-	Add collision
+	Add collision [BASICS FINISHED]
 	Add Fog [FINISHED]
-	########## Release
 	Add Sky [Some kind of FINISHED]
 	Add Lighting
 

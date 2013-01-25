@@ -1,4 +1,4 @@
-package me.block.util;
+package me.block.texture;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -26,18 +26,18 @@ public class MyTextureLoader {
 	// Static Textures to prevent using too much memory
 	// The single Sprites can be accesed by their position 
 	// starting at 0
-	public static Texture SPRITESHEET = loadTexture("res/texture/spritesheet.png");
+	public static Texture SPRITESHEET = loadTexture("spritesheet.png");
 
 	// Static values to keep track of the size of the Spritesheet
 	public static int TILESIZE = 16;
 	public static int SPRITESHEETWIDTH = SPRITESHEET.getImageWidth() / TILESIZE;
 	public static int SPRITESHEETHEIGHT = SPRITESHEET.getImageHeight()
 			/ TILESIZE;
-
+	
 	public static Texture loadTexture(String path) {
 
 		try {
-			return TextureLoader.getTexture("PNG", new FileInputStream(path));
+			return TextureLoader.getTexture("PNG",MyTextureLoader.class.getResourceAsStream("/me/block/texture/"+path));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

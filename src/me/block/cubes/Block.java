@@ -1,6 +1,6 @@
 package me.block.cubes;
 
-import me.block.util.MyTextureLoader;
+import me.block.texture.MyTextureLoader;
 
 import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.geom.Rectangle;
