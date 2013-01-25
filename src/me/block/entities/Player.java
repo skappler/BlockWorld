@@ -64,9 +64,9 @@ public class Player extends Entity {
 		this.gravitySpeed = (float) (1.5*speed);
 		this.trueSpeed = speed;
 		this.height = BASE_HEIGHT;
-		this.position.y = 16.0f;
-		this.position.x = 8.0f;
-		this.position.z = 8.0f;
+		this.position.y = 7.0f;
+		this.position.x = 5.0f;
+		this.position.z = 5.0f;
 
 		setCamera();
 	}

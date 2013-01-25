@@ -34,7 +34,10 @@ public class Level {
 		this.player = p;
 		this.chunks = new ArrayList<Chunk>();
 	
-		loadLevel();
+//		loadTerrainLevel();
+		
+		loadLabyrinthLevel();
+		
 //		
 //		this.chunks.add(new Chunk(0,0,this));
 //		this.chunks.add(new Chunk(0, -1, this));
@@ -52,7 +55,35 @@ public class Level {
 		
 	}
 	
-	public void loadLevel(){
+	public void loadLabyrinthLevel(){
+		InputStream in = this.getClass().getResourceAsStream("/me/block/level/labyrinth.png");
+		try {
+			heightMap = ImageIO.read(in);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		int chunkAmountX = heightMap.getWidth() / 16;
+		int chunkAmountZ = heightMap.getHeight() / 16;
+		
+		for(int i = 0; i < chunkAmountX;i++){
+			for(int j = 0; j < chunkAmountZ;j++){
+				
+				Chunk c = new Chunk(i, j, this);
+				c.loadLabyrinth(heightMap);
+				chunks.add(c);
+				
+			}
+		}
+		
+		for(Chunk c : chunks){
+			c.createDisplayList();
+		}
+
+	}
+	
+	public void loadTerrainLevel(){
 		
 		InputStream in = this.getClass().getResourceAsStream("/me/block/level/gray_gimp128.bmp");
 		try {
@@ -66,9 +97,9 @@ public class Level {
 		
 		for(int i = 0; i < heightMap.getWidth();i++){
 			for(int j = 0; j < heightMap.getHeight();j++){
-				heights[i][j] = (float)(heightMap.getRGB(i,j)&0x0000ff);
-//				if(heights[i][j] > 200f)
-//					heights[i][j] = 200f;
+				heights[i][j] = (float)(heightMap.getRGB(i,j)&0xff);
+				if(heights[i][j] > 200f)
+					heights[i][j] = 200f;
 				
 				if(heights[i][j] < 100f)
 					heights[i][j] = 100f;
@@ -87,11 +118,17 @@ public class Level {
 				
 				Chunk c = new Chunk(i, j, this);
 				c.loadTerrain(heights);
+//				c.createDisplayList();
 				chunks.add(c);
 				
 			}
 		}
-
+		
+		for(Chunk c : chunks){
+			c.createDisplayList();
+		}
+		
+		
 	}
 
 	public void render() {

@@ -150,7 +150,7 @@ public class Game {
 		glFogf(GL_FOG_MODE, GL_EXP);
 		glFogf(GL_FOG_DENSITY, .015f);
 		glHint(GL_FOG_HINT, GL_DONT_CARE);
-		glFogf (GL_FOG_START, 20.0f);
+		glFogf (GL_FOG_START, 10.0f);
 	    glFogf (GL_FOG_END, 40.0f);
 	    glEnable(GL_FOG);
 		

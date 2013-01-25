@@ -4,9 +4,14 @@ import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
+
+import java.awt.image.BufferedImage;
+
 import me.block.Game;
 import me.block.cubes.Block;
 import me.block.cubes.GrassBlock;
+import me.block.cubes.StoneFloorBlock;
+import me.block.cubes.StoneWallBlock;
 import me.block.texture.MyTextureLoader;
 
 import org.lwjgl.opengl.GL11;
@@ -53,6 +58,36 @@ public class Chunk {
 
 	}
 
+	public void loadLabyrinth(BufferedImage heightMap){
+		
+		int xBase = (int) (this.coordinates.x * 16);
+		int zBase = (int) (this.coordinates.z * 16);
+		
+		for (int i = 0; i < 16; i++) { // x
+			for (int j = 0; j < 16; j++) { // z
+				for (int y = 0; y < 10; y++) { // y
+
+					if(y < 6){
+						addBlock(i, y, j, Block.STONEFLOOR_ID);
+					}
+					if(y >= 6 && y < 8){
+						
+						if((heightMap.getRGB(xBase+i, zBase+j)&0xffffff) == 0){
+//							System.out.println(heightMap.getRGB(xBase+i, zBase+j));
+							addBlock(i, y, j, Block.STONEWALL_ID);
+						}
+						
+					}
+					if(y >= 8){
+						addBlock(i, y, j, Block.STONEFLOOR_ID);
+					}
+
+				}
+			}
+		}
+		
+	}
+	
 	public void loadTerrain(float[][] terrain){
 		
 		int xBase = (int) (this.coordinates.x * 16);
@@ -64,16 +99,12 @@ public class Chunk {
 				for (int y = 0; y < 16; y++) { // y
 
 					if(terrain[i+xBase][j+zBase] >= y )
-						addBlock(i, y, j);
+						addBlock(i, y, j,Block.GRASS_ID);
 
 				}
 			}
 		}
-		
-		displayList = GL11.glGenLists(1);
-
-		createDisplayList();
-		
+				
 	}
 	
 	public void loadStandardChunk() {
@@ -101,10 +132,6 @@ public class Chunk {
 				}
 			}
 		}
-		
-		displayList = GL11.glGenLists(1);
-
-		createDisplayList();
 
 	}
 
@@ -121,41 +148,37 @@ public class Chunk {
 						blocks[16 * 16 * i + 16 * k + j] = null;
 
 					} else {
-						addBlock(i, k, j);
-//						blocks[16 * 16 * i + 16 * k + j] = new GrassBlock(x, k,
-//								z);
+						addBlock(i, k, j,Block.GRASS_ID);
 					}
 				}
 			}
 			
-			displayList = GL11.glGenLists(1);
-
-			createDisplayList();
+			
 		}
-
-//		blocks[16 * 16 * 5 + 16 * 5 + 5] = new GrassBlock(
-//				coordinates.x * 16 + 5, 5, coordinates.z * 16 + 5);
-//		blocks[16 * 16 * 5 + 16 * 6 + 5] = new GrassBlock(
-//				coordinates.x * 16 + 5, 6, coordinates.z * 16 + 5);
-//		blocks[16 * 16 * 5 + 16 * 5 + 6] = new GrassBlock(
-//				coordinates.x * 16 + 5, 5, coordinates.z * 16 + 6);
 		
-		addBlock(5, 5, 5);
-		addBlock(5, 6, 5);
-		addBlock(5, 5, 6);
+		addBlock(5, 5, 5, Block.GRASS_ID);
+		addBlock(5, 6, 5,Block.GRASS_ID);
+		addBlock(5, 5, 6,Block.GRASS_ID);
 		
-//		addBlock(2, 7, 2);
-//		addBlock(2, 6, 3);
-
 	}
 	
-	public void addBlock(int x, int y, int z){
+	public void addBlock(int x, int y, int z, byte type){
 		
 		float xx = x + coordinates.x * 16;
 		float yy = y;
 		float zz = z + coordinates.z*16;
 		
-		blocks[16*16*x + 16*y + z] = new GrassBlock(xx, yy, zz);
+		switch(type){
+		case Block.GRASS_ID: 
+			blocks[16*16*x + 16*y + z] = new GrassBlock(xx, yy, zz);
+			break;
+		case Block.STONEFLOOR_ID:
+			blocks[16*16*x + 16*y + z] = new StoneFloorBlock(xx, yy, zz);
+			break;
+		case Block.STONEWALL_ID:
+			blocks[16*16*x + 16*y + z] = new StoneWallBlock(xx, yy, zz);
+			break;
+		}
 		
 	}
 	
@@ -165,8 +188,10 @@ public class Chunk {
 		
 	}
 
-	private void createDisplayList() {
+	public void createDisplayList() {
 
+		displayList = GL11.glGenLists(1);
+		
 		GL11.glNewList(displayList, GL11.GL_COMPILE);
 		
 		MyTextureLoader.SPRITESHEET.bind();
@@ -175,10 +200,12 @@ public class Chunk {
 		GL11.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 		GL11.glBegin(GL11.GL_QUADS);
+		
 		for (Block b : blocks) {
 					
-			if (b != null && checkVisible(b))
+			if (b != null && checkVisible(b)){
 				b.create();
+			}
 		}
 		GL11.glEnd();
 		GL11.glEndList();
@@ -192,6 +219,7 @@ public class Chunk {
 	 */
 	public boolean checkVisible(Block b) {
 
+		
 		if(b == null)
 			return false;
 		
@@ -203,12 +231,12 @@ public class Chunk {
 		int z = (int) Math.floor( posB.z);
 		
 		// The bools below are true if the side is Visible
-		boolean up = (getBlock(x, y + 1, z) == null);
-		boolean down = (getBlock(x, y - 1, z) == null);
-		boolean back = (getBlock(x, y, z - 1) == null);
-		boolean front = (getBlock(x, y - 1, z + 1) == null);
-		boolean right = (getBlock(x + 1, y, z) == null);
-		boolean left = (getBlock(x - 1, y - 1, z) == null);
+		boolean up = (getBlock(		x, 		y + 1, 	z) == null);
+		boolean down = (getBlock(	x, 		y - 1,	z) == null);
+		boolean back = (getBlock(	x, 		y, 		z - 1) == null);
+		boolean front = (getBlock(	x, 		y, 		z + 1) == null);
+		boolean right = (getBlock(	x + 1, 	y, 		z) == null);
+		boolean left = (getBlock(	x - 1, 	y, 		z) == null);
 
 //		if(getBlock(x, y, z - 1) != null)
 //		System.out.println("neighbour "+z+" "+getBlock(x, y, z - 1).getCoordinates().toString());
@@ -225,8 +253,8 @@ public class Chunk {
 		float xx = (float) x;
 		float zz = (float) z;
 		
-		float cx = (float) Math.floor(xx / 16);
-		float cz = (float) Math.floor(zz / 16);
+		float cx = (float) Math.floor(xx / 16f);
+		float cz = (float) Math.floor(zz / 16f);
 //		float cy = (float) Math.floor(y / 16);		
 
 		int ax = x % 16;//(int) Math.floor(x - coordinates.x*16);
@@ -254,12 +282,14 @@ public class Chunk {
 				
 		if (tmp == null)
 			return null;
-		return tmp.getBlock(x, y, z);
+		Block r = tmp.getBlock(x, y, z);
+		tmp = null;
+		return r;
 
 	}
 
 	public Vector3f getCoordinates() {
 		return coordinates;
 	}
-
+	
 }

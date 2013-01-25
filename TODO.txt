@@ -5,7 +5,7 @@ TODO:	Finish Jumping 	[FINISHED]
 	Add Sky [Some kind of FINISHED]
 	Add Lighting
 	Add View Vector
-	Add Terrain generation
+	Add Terrain generation [FINISHED]
 
 BUG: 	Chunk with negative coordinates got weird block coordinates [FIXED]
 	Chunk with negative y coordinate is at the wrong position [FIXED]
@@ -15,6 +15,6 @@ BUG: 	Chunk with negative coordinates got weird block coordinates [FIXED]
 
 MINOR: 	Adjust speed when walking diagonal (Vectors)
 	Multiple jumping
-	Chunk overlapping getBlock
+	Chunk overlapping getBlock [FIXED]
 	Nicer falling (acceleration)
 	Upwards collision

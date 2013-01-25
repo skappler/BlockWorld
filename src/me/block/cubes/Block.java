@@ -21,7 +21,9 @@ import static org.lwjgl.opengl.GL11.*;
 public class Block {
 
 	// The block ID identifies a block distinct
-	public static byte GRASS = 0x01;
+	public static final byte GRASS_ID = 0x01;
+	public static final byte STONEWALL_ID = 0x02;
+	public static final byte STONEFLOOR_ID = 0x03;
 
 	// The texture coordinates of the block starting at 0 up to (width *
 	// height)-1
@@ -31,16 +33,51 @@ public class Block {
 
 	private Vector3f coordinate;
 	private boolean isSolid = false;
+	
+	private float x;
+	private float y;
+	private float z;
+	
+	private float topTextureX;
+	private float topTextureY;
 
-	public Block(Vector3f coord) {
+	private float bottomTextureX;
+	private float bottomTextureY;
+
+	private float sideTextureX;
+	private float sideTextureY;
+	
+	private float delta;
+
+	public Block(Vector3f coord, int t, int b, int s) {
 
 		this.coordinate = coord;
+		this.top = t;
+		this.bottom = b;
+		this.side = s;
+		
+		x = coordinate.x;
+		y = coordinate.y;
+		z = coordinate.z;
+		
+		delta = (float) (1.0 / MyTextureLoader.SPRITESHEETWIDTH);
+
+
+		topTextureX =(top % MyTextureLoader.SPRITESHEETWIDTH)*delta;
+		topTextureY =(float) Math.floor(top / MyTextureLoader.SPRITESHEETHEIGHT)*delta;
+		
+		
+		bottomTextureX = (bottom % MyTextureLoader.SPRITESHEETWIDTH)*delta;
+		bottomTextureY = (float)Math.floor(bottom / MyTextureLoader.SPRITESHEETHEIGHT)*delta;
+
+		sideTextureX = (side % MyTextureLoader.SPRITESHEETWIDTH)*delta;
+		sideTextureY =(float) Math.floor(side / MyTextureLoader.SPRITESHEETHEIGHT)*delta;
 
 	}
 
-	public Block(float x, float y, float z) {
+	public Block(float x, float y, float z,int t, int b, int s) {
 
-		this(new Vector3f(x, y, z));
+		this(new Vector3f(x, y, z),t,b,s);
 
 	}
 
@@ -133,20 +170,8 @@ public class Block {
 	}
 
 	public void create() {
-		float x = coordinate.x;
-		float y = coordinate.y;
-		float z = coordinate.z;
-
-		float topTextureX = top / MyTextureLoader.SPRITESHEETWIDTH;
-		float topTextureY = top % MyTextureLoader.SPRITESHEETWIDTH;
-
-		float bottomTextureX = bottom / MyTextureLoader.SPRITESHEETWIDTH;
-		float bottomTextureY = bottom % MyTextureLoader.SPRITESHEETWIDTH;
-
-		float sideTextureX = side / MyTextureLoader.SPRITESHEETWIDTH;
-		float sideTextureY = side % MyTextureLoader.SPRITESHEETWIDTH;
-
-		float delta = (float) (1.0 / MyTextureLoader.SPRITESHEETWIDTH);
+		
+		
 
 		// if(x == 15f && z == 15f){
 		// topTextureX = bottom / MyTextureLoader.SPRITESHEETWIDTH;
@@ -240,4 +265,6 @@ public class Block {
 	public Vector3f getCoordinates() {
 		return this.coordinate;
 	}
+	
+	
 }

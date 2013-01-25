@@ -7,12 +7,8 @@ import org.lwjgl.util.vector.Vector3f;
 public class GrassBlock extends Block{
 
 	public GrassBlock(Vector3f coord){
-		super(coord);
-		
-		this.top = MyTextureLoader.GRASS_TOP;
-		this.bottom = MyTextureLoader.GRASS_BOTTOM;
-		this.side = MyTextureLoader.GRASS_SIDE;
-		
+		super(coord,MyTextureLoader.GRASS_TOP,MyTextureLoader.GRASS_BOTTOM,MyTextureLoader.GRASS_SIDE);
+				
 	}
 	
 	public GrassBlock(float x, float y, float z){
