@@ -46,6 +46,8 @@ public class Player extends Entity {
 	private boolean jumping = false;
 	private boolean jumpKey = false;
 	private boolean readyToJump = true;
+	private HashSet<Block> surrounding = new HashSet<Block>();
+
 	
 	private float trueSpeed;
 	
@@ -62,7 +64,7 @@ public class Player extends Entity {
 		this.gravitySpeed = (float) (1.5*speed);
 		this.trueSpeed = speed;
 		this.height = BASE_HEIGHT;
-		this.position.y = 8.0f;
+		this.position.y = 16.0f;
 		this.position.x = 8.0f;
 		this.position.z = 8.0f;
 
@@ -103,12 +105,10 @@ public class Player extends Entity {
 		//Get the player coordinates
 		int x = (int)Math.floor(this.position.x);
 		int y = (int)Math.floor(this.position.y);
-		System.out.println();
 		int z = (int)Math.floor(this.position.z);
 		y--;
 		
 		// Get the blocks
-		HashSet<Block> surrounding = new HashSet<Block>();
 		surrounding.add(currentChunk.getBlock(x-1, y+1, z-1));
 		surrounding.add(currentChunk.getBlock(x-1, y+1, z));
 		surrounding.add(currentChunk.getBlock(x-1, y+1, z+1));
@@ -140,7 +140,7 @@ public class Player extends Entity {
 			}
 		}
 		
-		surrounding = null;
+		surrounding.clear();
 		
 		//Reset position
 		

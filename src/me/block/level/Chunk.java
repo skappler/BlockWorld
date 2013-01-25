@@ -36,11 +36,11 @@ public class Chunk {
 		level = l;
 		blocks = new Block[16 * 16 * 16];
 
-		loadExampleChunk1();
+//		loadExampleChunk1();
 
-		displayList = GL11.glGenLists(1);
-
-		createDisplayList();
+//		displayList = GL11.glGenLists(1);
+//
+//		createDisplayList();
 	}
 
 	public void render() {
@@ -53,6 +53,29 @@ public class Chunk {
 
 	}
 
+	public void loadTerrain(float[][] terrain){
+		
+		int xBase = (int) (this.coordinates.x * 16);
+		int zBase = (int) (this.coordinates.z * 16);
+		
+		
+		for (int i = 0; i < 16; i++) { // x
+			for (int j = 0; j < 16; j++) { // z
+				for (int y = 0; y < 16; y++) { // y
+
+					if(terrain[i+xBase][j+zBase] >= y )
+						addBlock(i, y, j);
+
+				}
+			}
+		}
+		
+		displayList = GL11.glGenLists(1);
+
+		createDisplayList();
+		
+	}
+	
 	public void loadStandardChunk() {
 		for (int i = 0; i < 16; i++) { // x
 			for (int j = 0; j < 16; j++) { // z
@@ -78,6 +101,10 @@ public class Chunk {
 				}
 			}
 		}
+		
+		displayList = GL11.glGenLists(1);
+
+		createDisplayList();
 
 	}
 
@@ -100,6 +127,10 @@ public class Chunk {
 					}
 				}
 			}
+			
+			displayList = GL11.glGenLists(1);
+
+			createDisplayList();
 		}
 
 //		blocks[16 * 16 * 5 + 16 * 5 + 5] = new GrassBlock(

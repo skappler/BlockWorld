@@ -1,6 +1,11 @@
 package me.block.level;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 import me.block.cubes.Block;
 import me.block.cubes.GrassBlock;
@@ -22,26 +27,71 @@ public class Level {
 	public ArrayList<Chunk> chunks;
 	private Chunk currentChunk;
 	
-
+	BufferedImage heightMap;
+	
 	public Level(Player p) {
 
 		this.player = p;
 		this.chunks = new ArrayList<Chunk>();
 	
-		this.chunks.add(new Chunk(0,0,this));
-		this.chunks.add(new Chunk(0, -1, this));
-		this.chunks.add(new Chunk(-1,0,this));
-		this.chunks.add(new Chunk(0,1,this));
-		this.chunks.add(new Chunk(1,0,this));
-		this.chunks.add(new Chunk(0,-2,this));
+		loadLevel();
+//		
+//		this.chunks.add(new Chunk(0,0,this));
+//		this.chunks.add(new Chunk(0, -1, this));
+//		this.chunks.add(new Chunk(-1,0,this));
+//		this.chunks.add(new Chunk(0,1,this));
+//		this.chunks.add(new Chunk(1,0,this));
+//		this.chunks.add(new Chunk(0,-2,this));
+//		
+//		for(int i = 0; i < 10;i++){
+//			for(int j = 0; j < 10;j++){
+////				this.chunks.add(new Chunk(i,j,this));
+//			}
+//		}
 		
-		for(int i = 0; i < 10;i++){
-			for(int j = 0; j < 10;j++){
-//				this.chunks.add(new Chunk(i,j,this));
-			}
+		
+	}
+	
+	public void loadLevel(){
+		
+		InputStream in = this.getClass().getResourceAsStream("/me/block/level/gray_gimp128.bmp");
+		try {
+			heightMap = ImageIO.read(in);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
+		float[][] heights = new float[heightMap.getWidth()][heightMap.getHeight()];
 		
+		for(int i = 0; i < heightMap.getWidth();i++){
+			for(int j = 0; j < heightMap.getHeight();j++){
+				heights[i][j] = (float)(heightMap.getRGB(i,j)&0x0000ff);
+//				if(heights[i][j] > 200f)
+//					heights[i][j] = 200f;
+				
+				if(heights[i][j] < 100f)
+					heights[i][j] = 100f;
+				
+				heights[i][j] =(float) Math.floor( 4f + (heights[i][j] - 100f) * (8f/100f));
+//				System.out.print(heights[i][j]+" ");
+			}
+//			System.out.println("");
+		}
+		
+		int chunkAmountX = heightMap.getWidth() / 16;
+		int chunkAmountZ = heightMap.getHeight() / 16;
+		
+		for(int i = 0; i < chunkAmountX;i++){
+			for(int j = 0; j < chunkAmountZ;j++){
+				
+				Chunk c = new Chunk(i, j, this);
+				c.loadTerrain(heights);
+				chunks.add(c);
+				
+			}
+		}
+
 	}
 
 	public void render() {
