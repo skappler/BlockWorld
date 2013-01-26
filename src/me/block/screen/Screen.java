@@ -35,4 +35,8 @@ public class Screen {
 		this.level = newLevel;
 		player.setLevel(newLevel);
 	}
+	
+	public Player getPlayer(){
+		return player;
+	}
 }

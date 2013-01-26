@@ -2,6 +2,7 @@ package me.block.entities;
 
 
 
+import me.block.Game;
 import me.block.level.Chunk;
 import me.block.level.Level;
 
@@ -58,11 +59,13 @@ public abstract class Entity {
 
 		currentChunk = level.getChunkAt(position.x, position.z);
 
-//		 if (currentChunk == null)
-//		 Display.setTitle("NULL");
-//		 else
-//		 Display.setTitle(currentChunk.getCoordinates().x + " "
-//		 + currentChunk.getCoordinates().z);
+		 if (Game.DEBUG_PLAYER_CHUNK) {
+			if (currentChunk == null)
+				Display.setTitle("NULL");
+			else
+				Display.setTitle(currentChunk.getCoordinates().x + " "
+						+ currentChunk.getCoordinates().z);
+		}
 
 	}
 }
