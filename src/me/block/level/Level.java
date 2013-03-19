@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 import me.block.entities.Player;
+import me.block.util.MapFromText;
 
 /**
  * 
@@ -26,33 +27,35 @@ public class Level {
 	private Player player;
 	public ArrayList<Chunk> chunks;
 
-	BufferedImage heightMap;
+	private BufferedImage heightMap;
 
 	public Level(Player p) {
 
 		this.player = p;
 		this.chunks = new ArrayList<Chunk>();
 
-		// loadTerrainLevel();
-
+//		 loadTerrainLevel();
+//		 loadEarlyLevel();
 		loadLabyrinthLevel();
 
-		//
-		// this.chunks.add(new Chunk(0,0,this));
-		// this.chunks.add(new Chunk(0, -1, this));
-		// this.chunks.add(new Chunk(-1,0,this));
-		// this.chunks.add(new Chunk(0,1,this));
-		// this.chunks.add(new Chunk(1,0,this));
-		// this.chunks.add(new Chunk(0,-2,this));
-		//
-		// for(int i = 0; i < 10;i++){
-		// for(int j = 0; j < 10;j++){
-		// // this.chunks.add(new Chunk(i,j,this));
-		// }
-		// }
-
+		
 	}
 
+	public void loadEarlyLevel(){
+
+		 this.chunks.add(new Chunk(0,0,this));
+		 this.chunks.add(new Chunk(0, -1, this));
+		 this.chunks.add(new Chunk(-1,0,this));
+		 this.chunks.add(new Chunk(0,1,this));
+		 this.chunks.add(new Chunk(1,0,this));
+		 this.chunks.add(new Chunk(0,-2,this));
+		
+		 for(Chunk c : chunks){
+			 c.createDisplayList();
+		 }
+
+	}
+	
 	public void loadLabyrinthLevel() {
 		InputStream in = this.getClass().getResourceAsStream(
 				"/me/block/level/labyrinth.png");
@@ -61,7 +64,7 @@ public class Level {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		
 		int chunkAmountX = heightMap.getWidth() / 16;
 		int chunkAmountZ = heightMap.getHeight() / 16;
 

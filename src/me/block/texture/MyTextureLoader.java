@@ -21,8 +21,8 @@ public class MyTextureLoader {
 	public static final byte GRASS_TOP = 1;
 	public static final byte GRASS_BOTTOM = 2;
 
-	public static final byte STONEFLOOR = 4;
-	public static final byte STONEWALL = 5;
+	public static final byte STONEFLOOR = 5;
+	public static final byte STONEWALL = 3;
 
 	// Static Textures to prevent using too much memory
 	// The single Sprites can be accesed by their position
@@ -45,7 +45,7 @@ public class MyTextureLoader {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		
 		return null;
 	}
 

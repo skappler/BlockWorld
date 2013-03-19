@@ -9,6 +9,7 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 
 import me.block.Game;
+import me.block.util.MapFromText;
 
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.util.BufferedImageUtil;
@@ -16,6 +17,7 @@ import org.newdawn.slick.util.BufferedImageUtil;
 public class Gui {
 
 	private BufferedImage map;
+	private int[] cols; //x*width+y
 	private Texture mapTex;
 	private float oldX;
 	private float oldZ;
@@ -30,6 +32,17 @@ public class Gui {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+//		map = MapFromText.mapFromString("AAA");
+
+		cols = new int[map.getHeight()*map.getWidth()];
+		
+		for(int i = 0; i < map.getHeight();i++){
+			for(int j = 0; j < map.getWidth(); j++){
+				cols[i*map.getHeight()+j] = map.getRGB(i, j);
+			}
+		}
+		
 		oldX = 0f;
 		oldZ = 0f;
 		
@@ -37,7 +50,7 @@ public class Gui {
 	
 	public void update(float x, float z){
 		
-		map.setRGB((int)oldX , (int)oldZ, 0xffffff);	
+		map.setRGB((int)oldX , (int)oldZ,cols[(int)oldX*map.getHeight()+(int)oldZ]);	
 		
 		oldX = x;
 		oldZ = z;

@@ -9,6 +9,7 @@ import me.block.cubes.Block;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.geom.Rectangle;
 
@@ -49,15 +50,20 @@ public class Player extends Entity {
 
 	private float trueSpeed;
 
+	private boolean M_PRESSED = false;
+	private boolean F_PRESSED = false;
+	
 	private Vector3f oldPos;
+	private Vector3f delta;
 
 	public Player() {
 		super();
 
 		this.camera = new Camera();
 		this.oldPos = new Vector3f();
+		this.delta = new Vector3f();
 		this.speed = 0.1f;
-		this.jumpSpeed = (float) (3. * speed);
+		this.jumpSpeed = (float) (2.5 * speed);
 		this.gravitySpeed = (float) (1.5 * speed);
 		this.trueSpeed = speed;
 		this.height = BASE_HEIGHT;
@@ -73,7 +79,7 @@ public class Player extends Entity {
 
 		tick++;
 		// bobbing += Math.sin(tick/5)/75;
-
+		
 		handleInput();
 		checkCollision();
 		jump();
@@ -143,7 +149,7 @@ public class Player extends Entity {
 		}
 		if (Game.DEBUG_COLLISION_TIME) {
 			long t2 = System.nanoTime();
-			System.out.println("Debug Collision time: " + (t2 - t1));// ///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			System.out.println("Debug Collision time: " + (t2 - t1));
 		}
 	}
 
@@ -216,40 +222,18 @@ public class Player extends Entity {
 
 	}
 
-	public void gravity() {
-
-		Block under = null;
-
-		try {
-			under = currentChunk.getBlock((int) Math.floor(position.x),
-					(int) Math.floor(position.y - 1),
-					(int) Math.floor(position.z));
-		} catch (NullPointerException e) {
-			under = null;
-		}
-
-		if (under == null) {
-			position.y -= gravitySpeed;
-		} else {
-
-			if (position.y > under.getCoordinates().y + 1)
-				position.y -= gravitySpeed;
-			if (position.y <= under.getCoordinates().y + 1) {
-				position.y = under.getCoordinates().y + 1;
-				readyToJump = true;
-
-			}
-		}
-
-		if (position.y < -8)
-			position.y = 16.0f;
-	}
+	
 
 	public void handleInput() {
 
 		oldPos.x = position.x;
 		oldPos.y = position.y;
 		oldPos.z = position.z;
+		
+		int n = 0; 
+		delta.x = 0;
+		delta.y = 0;
+		delta.z = 0;
 
 		this.rotation.x -= Mouse.getDY() * Game.MOUSESPEED;
 		if (this.rotation.x < -85)
@@ -257,53 +241,67 @@ public class Player extends Entity {
 		if (this.rotation.x > 85)
 			this.rotation.x = 85;
 
-		if (Game.DEBUG_PLAYER_POSITION) {
-			Display.setTitle("" + this.position.x + " " + this.position.y + " "
-					+ this.position.z);
-		}
 		this.rotation.y += Mouse.getDX() * Game.MOUSESPEED;
 		if (this.rotation.y > 360)
 			this.rotation.y -= 360;
 		if (this.rotation.y < 0)
 			this.rotation.y += 360;
-
+		
+		if (Game.DEBUG_PLAYER_POSITION) {
+			Display.setTitle("" + this.position.x + " " + this.position.y + " "
+					+ this.position.z);
+		}
+		
 		// this.height = BASE_HEIGHT;
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-			this.position.x += (float) Math
+			this.delta.x += (float) Math
 					.sin(Math.toRadians(this.rotation.y)) * trueSpeed;
-			this.position.z += -(float) Math.cos(Math
+			this.delta.z += -(float) Math.cos(Math
 					.toRadians(this.rotation.y)) * trueSpeed;
 			this.height = BASE_HEIGHT + bobbing;
+			n++;
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-			this.position.x -= (float) Math
+			this.delta.x -= (float) Math
 					.sin(Math.toRadians(this.rotation.y)) * trueSpeed;
-			this.position.z -= -(float) Math.cos(Math
+			this.delta.z -= -(float) Math.cos(Math
 					.toRadians(this.rotation.y)) * trueSpeed;
 			this.height = BASE_HEIGHT + bobbing;
+			n++;
 
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-			this.position.x += (float) Math.sin(Math
+			this.delta.x += (float) Math.sin(Math
 					.toRadians(this.rotation.y + 90)) * trueSpeed;
-			this.position.z += -(float) Math.cos(Math
+			this.delta.z += -(float) Math.cos(Math
 					.toRadians(this.rotation.y + 90)) * trueSpeed;
 			this.height = BASE_HEIGHT + bobbing;
-
+			n++;
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-			this.position.x += (float) Math.sin(Math
+			this.delta.x += (float) Math.sin(Math
 					.toRadians(this.rotation.y - 90)) * trueSpeed;
-			this.position.z += -(float) Math.cos(Math
+			this.delta.z += -(float) Math.cos(Math
 					.toRadians(this.rotation.y - 90)) * trueSpeed;
 			this.height = BASE_HEIGHT + bobbing;
-
+			n++;
 		}
 
+		if(n != 0){
+			delta.x /= n;
+			delta.y /= n;
+			delta.z /= n;
+
+		}
+		
+		position.x += delta.x;
+		position.y += delta.y;
+		position.z += delta.z;
+		
 		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 			this.trueSpeed = (float) (1.8 * speed);
 		} else {
@@ -318,6 +316,31 @@ public class Player extends Entity {
 
 		} else {
 			jumpKey = false;
+		}
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_F)){
+			
+			if(!F_PRESSED){
+				Game.FOG = ! Game.FOG;
+				if(Game.FOG)
+					Game.enableFog();
+				else
+					GL11.glDisable(GL11.GL_FOG);
+				
+			}
+			
+			F_PRESSED = true;
+			
+		}else{
+			F_PRESSED = false;
+		}
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_M)){
+			if(!M_PRESSED)
+				Game.MINIMAP = !Game.MINIMAP;
+			M_PRESSED=true;
+		}else{
+			M_PRESSED=false;
 		}
 
 		// if(Keyboard.isKeyDown(Keyboard.KEY_F)){
@@ -353,10 +376,38 @@ public class Player extends Entity {
 		}
 	}
 
+	public void gravity() {
+
+		Block under = null;
+
+		if(currentChunk != null){
+			under = currentChunk.getBlock((int) Math.floor(position.x),
+					(int) Math.floor(position.y - 1),
+					(int) Math.floor(position.z));
+	}
+		
+		if (under == null) {
+			position.y -= gravitySpeed;
+		} else {
+
+			if (position.y > under.getCoordinates().y + 1)
+				position.y -= gravitySpeed;
+			if (position.y <= under.getCoordinates().y + 1) {
+				position.y = under.getCoordinates().y + 1;
+				readyToJump = true;
+
+			}
+		}
+		
+		if (position.y < -8)
+			position.y = 16.0f;
+	}
+	
 	public Rectangle getBounds() {
-		return new Rectangle(position.x, position.z, 0f, 0f);
-		// return new Rectangle((float)(position.x - .75 / 2),(float)
-		// (position.z - .75 / 2),(float) .75,(float) .75);
+//		return new Rectangle(position.x, position.z, 0f, 0f);
+		float size = .4f;
+		 return new Rectangle((float)(position.x - size / 2),(float)
+		 (position.z - size / 2),(float) size,(float) size);
 	}
 
 	public void setCamera() {

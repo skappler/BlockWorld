@@ -46,6 +46,11 @@ public abstract class Entity {
 		this.level = l;
 	}
 
+	/**
+	 * Recalculates the chunk the entity is at 
+	 * 
+	 */
+	
 	public void checkChunk() {
 
 		float cx = (float) Math.floor(position.x / 16);

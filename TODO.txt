@@ -6,6 +6,9 @@ TODO:	Finish Jumping 	[FINISHED]
 	Add Lighting
 	Add View Vector
 	Add Terrain generation [FINISHED]
+	Move GUI into Screen class
+	Rewrite collision (Move along walls)
+	Rewrite jumping and gravity (Check rectangle with block below)
 
 BUG: 	Chunk with negative coordinates got weird block coordinates [FIXED]
 	Chunk with negative y coordinate is at the wrong position [FIXED]
@@ -13,8 +16,7 @@ BUG: 	Chunk with negative coordinates got weird block coordinates [FIXED]
 	Chunks with negative coordinates remove wrong side for rendering
 		Still get the wrong block from getBlock[FIXED]
 
-MINOR: 	Adjust speed when walking diagonal (Vectors)
+MINOR: 	Adjust speed when walking diagonal (Vectors) [FIXED]
 	Multiple jumping
 	Chunk overlapping getBlock [FIXED]
-	Nicer falling (acceleration)
-	Upwards collision
+	Catch Array Bounds in Gui
