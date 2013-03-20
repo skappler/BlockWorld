@@ -7,8 +7,9 @@ TODO:	Finish Jumping 	[FINISHED]
 	Add View Vector
 	Add Terrain generation [FINISHED]
 	Move GUI into Screen class
-	Rewrite collision (Move along walls)
+	Rewrite collision (Move along walls) [FINISHED]
 	Rewrite jumping and gravity (Check rectangle with block below)
+	Use a Map for key toggling
 
 BUG: 	Chunk with negative coordinates got weird block coordinates [FIXED]
 	Chunk with negative y coordinate is at the wrong position [FIXED]

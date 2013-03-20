@@ -1,5 +1,6 @@
 package me.block.entities;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 import me.block.Game;
@@ -49,10 +50,9 @@ public class Player extends Entity {
 	private HashSet<Block> surrounding = new HashSet<Block>();
 
 	private float trueSpeed;
-
-	private boolean M_PRESSED = false;
-	private boolean F_PRESSED = false;
 	
+	private HashMap<Integer, Boolean> keyPressed;
+
 	private Vector3f oldPos;
 	private Vector3f delta;
 
@@ -71,6 +71,11 @@ public class Player extends Entity {
 		this.position.x = 5.0f;
 		this.position.z = 5.0f;
 
+		//init all keys the player should be able to use
+		this.keyPressed = new HashMap<Integer, Boolean>();
+		this.keyPressed.put(Keyboard.KEY_F, false);
+		this.keyPressed.put(Keyboard.KEY_M, false);
+		
 		setCamera();
 	}
 
@@ -81,7 +86,6 @@ public class Player extends Entity {
 		// bobbing += Math.sin(tick/5)/75;
 		
 		handleInput();
-		checkCollision();
 		jump();
 		gravity();
 		setCamera();
@@ -93,21 +97,18 @@ public class Player extends Entity {
 
 	}
 
-	public void checkCollision() {
+	public boolean checkCollision() {
 
 		if (currentChunk == null)
-			return;
+			return false;
 
 		// Get the player coordinates
-		int x = (int) Math.floor(this.position.x);
-		int y = (int) Math.floor(this.position.y);
-		int z = (int) Math.floor(this.position.z);
+		int x = (int) Math.floor(this.position.x );
+		int y = (int) Math.floor(this.position.y );
+		int z = (int) Math.floor(this.position.z );
 		y--;
 
-		long t1 = 0;
-		if (Game.DEBUG_COLLISION_TIME)
-			t1 = System.nanoTime();
-
+		
 		Label: {
 			if (check_Block(x - 1, y + 1, z - 1))
 				break Label;
@@ -146,86 +147,33 @@ public class Player extends Entity {
 				break Label;
 			if (check_Block(x + 1, y + 2, z + 1))
 				break Label;
+			
+			return false;
 		}
-		if (Game.DEBUG_COLLISION_TIME) {
-			long t2 = System.nanoTime();
-			System.out.println("Debug Collision time: " + (t2 - t1));
-		}
+		
+		
+		
+		return true;
+
 	}
 
 	public boolean check_Block(int x, int y, int z) {
+		
 		Block b = currentChunk.getBlock(x, y, z);
+		
 		if (b != null && this.getBounds().intersects(b.getBounds())) {
 			this.position.x = oldPos.x;
 			this.position.z = oldPos.z;
+			
 			return true;
 		}
 		return false;
 	}
 
-	public void checkCollision2() {
-
-		/*
-		 * -> get Blocks in question -> check Collision for every block -> if
-		 * true set pos to oldPos
-		 */
-
-		if (currentChunk == null)
-			return;
-
-		// Get the player coordinates
-		int x = (int) Math.floor(this.position.x);
-		int y = (int) Math.floor(this.position.y);
-		int z = (int) Math.floor(this.position.z);
-		y--;
-
-		// Get the blocks
-		surrounding.add(currentChunk.getBlock(x - 1, y + 1, z - 1));
-		surrounding.add(currentChunk.getBlock(x - 1, y + 1, z));
-		surrounding.add(currentChunk.getBlock(x - 1, y + 1, z + 1));
-		surrounding.add(currentChunk.getBlock(x, y + 1, z - 1));
-		surrounding.add(currentChunk.getBlock(x, y + 1, z));
-		surrounding.add(currentChunk.getBlock(x, y + 1, z + 1));
-		surrounding.add(currentChunk.getBlock(x + 1, y + 1, z - 1));
-		surrounding.add(currentChunk.getBlock(x + 1, y + 1, z));
-		surrounding.add(currentChunk.getBlock(x + 1, y + 1, z + 1));
-
-		surrounding.add(currentChunk.getBlock(x - 1, y + 2, z - 1));
-		surrounding.add(currentChunk.getBlock(x - 1, y + 2, z));
-		surrounding.add(currentChunk.getBlock(x - 1, y + 2, z + 1));
-		surrounding.add(currentChunk.getBlock(x, y + 2, z - 1));
-		surrounding.add(currentChunk.getBlock(x, y + 2, z));
-		surrounding.add(currentChunk.getBlock(x, y + 2, z + 1));
-		surrounding.add(currentChunk.getBlock(x + 1, y + 2, z - 1));
-		surrounding.add(currentChunk.getBlock(x + 1, y + 2, z));
-		surrounding.add(currentChunk.getBlock(x + 1, y + 2, z + 1));
-
-		// Check collision for every block
-
-		boolean collision = false;
-
-		for (Block b : surrounding) {
-			if (b != null && this.getBounds().intersects(b.getBounds())) {
-				collision = true;
-				break;
-			}
-		}
-
-		surrounding.clear();
-
-		// Reset position
-
-		if (collision) {
-			this.position.x = oldPos.x;
-			this.position.z = oldPos.z;
-		}
-
-	}
-
 	
 
 	public void handleInput() {
-
+		
 		oldPos.x = position.x;
 		oldPos.y = position.y;
 		oldPos.z = position.z;
@@ -302,6 +250,30 @@ public class Player extends Entity {
 		position.y += delta.y;
 		position.z += delta.z;
 		
+		long t1 = 0;
+		if (Game.DEBUG_COLLISION_TIME)
+			t1 = System.nanoTime();
+
+		
+		if(checkCollision()){
+			
+			position.x += delta.x;
+			if(checkCollision()){
+				position.z += delta.z;
+				checkCollision();
+			}
+			
+		}
+		
+		if (Game.DEBUG_COLLISION_TIME) {
+			long t2 = System.nanoTime();
+			System.out.println("Debug Collision time: " + (t2 - t1));
+		}
+		
+		
+		// +--- END MOVEMENT CODE ---+
+		
+		
 		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 			this.trueSpeed = (float) (1.8 * speed);
 		} else {
@@ -320,7 +292,7 @@ public class Player extends Entity {
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_F)){
 			
-			if(!F_PRESSED){
+			if(!keyPressed.get(Keyboard.KEY_F)){
 				Game.FOG = ! Game.FOG;
 				if(Game.FOG)
 					Game.enableFog();
@@ -329,32 +301,19 @@ public class Player extends Entity {
 				
 			}
 			
-			F_PRESSED = true;
+			keyPressed.put(Keyboard.KEY_F, true);
 			
 		}else{
-			F_PRESSED = false;
+			keyPressed.put(Keyboard.KEY_F, false);
 		}
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_M)){
-			if(!M_PRESSED)
+			if(!keyPressed.get(Keyboard.KEY_M))
 				Game.MINIMAP = !Game.MINIMAP;
-			M_PRESSED=true;
+			keyPressed.put(Keyboard.KEY_M, true);
 		}else{
-			M_PRESSED=false;
+			keyPressed.put(Keyboard.KEY_M, false);
 		}
-
-		// if(Keyboard.isKeyDown(Keyboard.KEY_F)){
-		// System.out.println("F");
-		// System.out.println(currentChunk.getBlock(23, 3,
-		// -16).getCoordinates().toString());
-		// currentChunk.checkVisible(currentChunk.getBlock(23, 3, -16));
-		//
-		// // System.out.println(currentChunk.getBlock(18, 3,
-		// -16).getCoordinates().toString());
-		// // System.out.println(currentChunk.getBlock(18, 3,
-		// -17).getCoordinates().toString());
-		//
-		// }
 
 		checkChunk();
 
