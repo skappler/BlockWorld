@@ -14,6 +14,7 @@ public class Screen {
 
 	private Level level;
 	private Player player;
+	private Gui gui;
 	
 	public Screen(){
 		
@@ -21,14 +22,18 @@ public class Screen {
 		level = new Level(player);
 		player.setLevel(level);
 		player.checkChunk();
+		
+		gui = new Gui(this);
 	}
 	
-	public void render(){
+	public void renderGame(){
 		level.render();
 	}
 	
-	public void update(){
+	public void updateGame(){
 		level.update();
+		
+		updateGui();
 	}
 	
 	public void changeLevel(Level newLevel){
@@ -36,7 +41,19 @@ public class Screen {
 		player.setLevel(newLevel);
 	}
 	
+	public Level getLevel(){
+		return level;
+	}
+	
 	public Player getPlayer(){
 		return player;
+	}
+
+	public void updateGui() {
+		gui.update();
+	}
+
+	public void renderGui() {
+		gui.render();
 	}
 }

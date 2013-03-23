@@ -46,7 +46,7 @@ public class Game {
 	// General Setting
 	public static final float MOUSESPEED = 0.3f;
 	public static boolean CROSSHAIR = false;
-	public static boolean MINIMAP = false;
+	public static boolean MINIMAP = true;
 	public static boolean CULL_FACE = false;
 	public static boolean FOG = true;
 
@@ -55,7 +55,7 @@ public class Game {
 
 	// Game Mechanics
 	private Screen screen;
-	private Gui gui;
+//	private Gui gui;
 	private int fps = 0;
 	private double lastFpsTime = 0;
 
@@ -81,7 +81,7 @@ public class Game {
 
 		// Initiate Variables
 		screen = new Screen();
-		gui = new Gui();
+//		gui = new Gui();
 
 		// Bind the textures and set the Texture paremeter
 		MyTextureLoader.SPRITESHEET.bind();
@@ -139,11 +139,10 @@ public class Game {
 		glLoadIdentity();
 
 		init3d();
-		screen.render();
+		screen.renderGame();
 
 		init2d();
-		if(MINIMAP)
-			gui.render();
+		screen.renderGui();
 	}
 
 	private void update() {
@@ -152,10 +151,7 @@ public class Game {
 				|| Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))
 			finished = true;
 
-		screen.update();
-		if(MINIMAP)
-			gui.update(screen.getPlayer().position.x, screen.getPlayer().position.z);
-
+		screen.updateGame();
 	}
 
 	private void init3d() {

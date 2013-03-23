@@ -27,7 +27,7 @@ public class Level {
 	private Player player;
 	public ArrayList<Chunk> chunks;
 
-	private BufferedImage heightMap;
+	private BufferedImage mapImage;
 
 	public Level(Player p) {
 
@@ -60,19 +60,19 @@ public class Level {
 		InputStream in = this.getClass().getResourceAsStream(
 				"/me/block/level/labyrinth.png");
 		try {
-			heightMap = ImageIO.read(in);
+			mapImage = ImageIO.read(in);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		int chunkAmountX = heightMap.getWidth() / 16;
-		int chunkAmountZ = heightMap.getHeight() / 16;
+		int chunkAmountX = mapImage.getWidth() / 16;
+		int chunkAmountZ = mapImage.getHeight() / 16;
 
 		for (int i = 0; i < chunkAmountX; i++) {
 			for (int j = 0; j < chunkAmountZ; j++) {
 
 				Chunk c = new Chunk(i, j, this);
-				c.loadLabyrinth(heightMap);
+				c.loadLabyrinth(mapImage);
 				chunks.add(c);
 
 			}
@@ -89,17 +89,17 @@ public class Level {
 		InputStream in = this.getClass().getResourceAsStream(
 				"/me/block/level/gray_gimp128.bmp");
 		try {
-			heightMap = ImageIO.read(in);
+			mapImage = ImageIO.read(in);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		float[][] heights = new float[heightMap.getWidth()][heightMap
+		float[][] heights = new float[mapImage.getWidth()][mapImage
 				.getHeight()];
 
-		for (int i = 0; i < heightMap.getWidth(); i++) {
-			for (int j = 0; j < heightMap.getHeight(); j++) {
-				heights[i][j] = (float) (heightMap.getRGB(i, j) & 0xff);
+		for (int i = 0; i < mapImage.getWidth(); i++) {
+			for (int j = 0; j < mapImage.getHeight(); j++) {
+				heights[i][j] = (float) (mapImage.getRGB(i, j) & 0xff);
 				if (heights[i][j] > 200f)
 					heights[i][j] = 200f;
 
@@ -113,8 +113,8 @@ public class Level {
 			// System.out.println("");
 		}
 
-		int chunkAmountX = heightMap.getWidth() / 16;
-		int chunkAmountZ = heightMap.getHeight() / 16;
+		int chunkAmountX = mapImage.getWidth() / 16;
+		int chunkAmountZ = mapImage.getHeight() / 16;
 
 		for (int i = 0; i < chunkAmountX; i++) {
 			for (int j = 0; j < chunkAmountZ; j++) {
@@ -173,5 +173,9 @@ public class Level {
 
 		player.update();
 
+	}
+	
+	public BufferedImage getMapImage(){
+		return mapImage;
 	}
 }

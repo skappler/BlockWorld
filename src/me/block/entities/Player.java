@@ -47,7 +47,6 @@ public class Player extends Entity {
 	private boolean jumping = false;
 	private boolean jumpKey = false;
 	private boolean readyToJump = true;
-	private HashSet<Block> surrounding = new HashSet<Block>();
 
 	private float trueSpeed;
 	

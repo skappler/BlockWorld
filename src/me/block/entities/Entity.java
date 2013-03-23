@@ -46,6 +46,10 @@ public abstract class Entity {
 		this.level = l;
 	}
 
+	public Vector3f getPosition(){
+		return position;
+	}
+	
 	/**
 	 * Recalculates the chunk the entity is at 
 	 * 
