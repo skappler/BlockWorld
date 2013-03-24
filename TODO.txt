@@ -1,7 +1,7 @@
-TODO:	Saving space for Blocks
-	Rewrite jumping and gravity (Check rectangle with block below)
+TODO:	Rewrite jumping and gravity (Check rectangle with block below)
 	Add View Vector
 	Add Lighting
+	Saving space for Blocks [FINISHED?]
 	Move GUI into Screen class [FINISHED]
 	Finish Jumping 	[FINISHED]
 	Add collision [FINISHED]
@@ -17,7 +17,7 @@ BUG: 	Chunk with negative coordinates got weird block coordinates [FIXED]
 	Chunks with negative coordinates remove wrong side for rendering
 		Still get the wrong block from getBlock[FIXED]
 
-MINOR: 		Multiple jumping
-	Catch Array Bounds in Gui
+MINOR: 	Catch Array Bounds in Gui [FIXED]
+	Multiple jumping [FIXED]
 	Adjust speed when walking diagonal (Vectors) [FIXED]
 	Chunk overlapping getBlock [FIXED]

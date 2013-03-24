@@ -269,18 +269,19 @@ public class Player extends Entity {
 			System.out.println("Debug Collision time: " + (t2 - t1));
 		}
 		
-		
-		// +--- END MOVEMENT CODE ---+
-		
-		
 		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 			this.trueSpeed = (float) (1.8 * speed);
 		} else {
 			this.trueSpeed = speed;
 		}
+		
+		checkChunk();
+		
+		// +--- END MOVEMENT CODE ---+
+		// Jumping Code
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-			if (!jumpKey) {
+			if (!jumpKey && readyToJump) {
 				jumping = true;
 			}
 			jumpKey = true;
@@ -288,6 +289,9 @@ public class Player extends Entity {
 		} else {
 			jumpKey = false;
 		}
+		
+		
+		// Toggling of Gui Elements
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_F)){
 			
@@ -314,7 +318,6 @@ public class Player extends Entity {
 			keyPressed.put(Keyboard.KEY_M, false);
 		}
 
-		checkChunk();
 
 	}
 

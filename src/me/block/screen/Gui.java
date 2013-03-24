@@ -39,9 +39,9 @@ public class Gui {
 		if (Game.CROSSHAIR) {
 			glBegin(GL_QUADS);
 			glVertex2i(Game.WIDTH / 2, Game.HEIGHT / 2);
-			glVertex2i(Game.WIDTH / 2 + 8, Game.HEIGHT / 2);
-			glVertex2i(Game.WIDTH / 2 + 8, Game.HEIGHT / 2 + 8);
-			glVertex2i(Game.WIDTH / 2, Game.HEIGHT / 2 + 8);
+			glVertex2i(Game.WIDTH / 2 + Game.CROSSHAIR_SIZE, Game.HEIGHT / 2);
+			glVertex2i(Game.WIDTH / 2 + Game.CROSSHAIR_SIZE, Game.HEIGHT / 2 + Game.CROSSHAIR_SIZE);
+			glVertex2i(Game.WIDTH / 2, Game.HEIGHT / 2 + Game.CROSSHAIR_SIZE);
 			glEnd();
 		}
 		

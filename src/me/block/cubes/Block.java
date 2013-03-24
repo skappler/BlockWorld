@@ -37,15 +37,7 @@ public class Block {
 	private float x;
 	private float y;
 	private float z;
-	
-	private float topTextureX;
-	private float topTextureY;
 
-	private float bottomTextureX;
-	private float bottomTextureY;
-
-	private float sideTextureX;
-	private float sideTextureY;
 	
 	private float delta;
 
@@ -63,16 +55,7 @@ public class Block {
 		delta = (float) (1.0 / MyTextureLoader.SPRITESHEETWIDTH);
 
 
-		topTextureX =(top % MyTextureLoader.SPRITESHEETWIDTH)*delta;
-		topTextureY =(float) Math.floor(top / MyTextureLoader.SPRITESHEETHEIGHT)*delta;
 		
-		
-		bottomTextureX = (bottom % MyTextureLoader.SPRITESHEETWIDTH)*delta;
-		bottomTextureY = (float)Math.floor(bottom / MyTextureLoader.SPRITESHEETHEIGHT)*delta;
-
-		sideTextureX = (side % MyTextureLoader.SPRITESHEETWIDTH)*delta;
-		sideTextureY =(float) Math.floor(side / MyTextureLoader.SPRITESHEETHEIGHT)*delta;
-
 	}
 
 	public Block(float x, float y, float z,int t, int b, int s) {
@@ -171,7 +154,16 @@ public class Block {
 
 	public void create() {
 		
+		float topTextureX =(top % MyTextureLoader.SPRITESHEETWIDTH)*delta;
+		float topTextureY =(float) Math.floor(top / MyTextureLoader.SPRITESHEETHEIGHT)*delta;
 		
+		
+		float bottomTextureX = (bottom % MyTextureLoader.SPRITESHEETWIDTH)*delta;
+		float bottomTextureY = (float)Math.floor(bottom / MyTextureLoader.SPRITESHEETHEIGHT)*delta;
+
+		float sideTextureX = (side % MyTextureLoader.SPRITESHEETWIDTH)*delta;
+		float sideTextureY =(float) Math.floor(side / MyTextureLoader.SPRITESHEETHEIGHT)*delta;
+
 
 		// if(x == 15f && z == 15f){
 		// topTextureX = bottom / MyTextureLoader.SPRITESHEETWIDTH;
