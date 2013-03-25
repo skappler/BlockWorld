@@ -38,7 +38,7 @@ public class Game {
 
 	// DEBUG FLAGS
 	public static boolean DEBUG_COLLISION_TIME = false;
-	public static boolean DEBUG_PLAYER_POSITION = false;
+	public static boolean DEBUG_PLAYER_POSITION = true;
 	public static boolean DEBUG_PLAYER_CHUNK = false;
 	public static boolean DEBUG_WORLD_COLOR = false;
 	public static boolean DEBUG_FPS_CONSOLE = false;
@@ -46,11 +46,12 @@ public class Game {
 
 	// General Setting
 	public static final float MOUSESPEED = 0.3f;
-	public static boolean CROSSHAIR = true;
+	public static boolean CROSSHAIR = false;
 	public static int CROSSHAIR_SIZE = 4;
 	public static boolean MINIMAP = true;
 	public static boolean CULL_FACE = false;
 	public static boolean FOG = true;
+	public static boolean NOCLIP = false;
 
 	// General variables
 	private boolean finished = false;

@@ -54,6 +54,7 @@ public class Player extends Entity {
 
 	private Vector3f oldPos;
 	private Vector3f delta;	
+	private Vector3f view;
 	
 	public Player() {
 		super();
@@ -61,6 +62,7 @@ public class Player extends Entity {
 		this.camera = new Camera();
 		this.oldPos = new Vector3f();
 		this.delta = new Vector3f();
+		this.view = new Vector3f();
 		this.speed = 0.1f;
 		this.jumpSpeed = (float) (2.5 * speed);
 		this.gravitySpeed = (float) (1.5 * speed);
@@ -86,19 +88,20 @@ public class Player extends Entity {
 		
 		handleInput();
 		jump();
-		gravity();
+		if(!Game.NOCLIP)
+			gravity();
 		setCamera();
 
 	}
 
 	@Override
 	public void render() {
-
+		
 	}
 
 	public boolean checkCollision() {
 
-		if (currentChunk == null)
+		if (currentChunk == null || Game.NOCLIP)
 			return false;
 
 		// Get the player coordinates
@@ -173,6 +176,11 @@ public class Player extends Entity {
 
 	public void handleInput() {
 		
+		view.x = (float) Math.sin(Math.toRadians(this.rotation.y));// + camera.position.x;
+		view.z = -(float) Math.cos(Math.toRadians(this.rotation.y));//+ camera.position.z;
+		view.y = -(float) Math.sin(Math.toRadians(this.rotation.x));//+ camera.position.y;
+		view.normalise();
+			
 		oldPos.x = position.x;
 		oldPos.y = position.y;
 		oldPos.z = position.z;
@@ -206,6 +214,10 @@ public class Player extends Entity {
 					.sin(Math.toRadians(this.rotation.y)) * trueSpeed;
 			this.delta.z += -(float) Math.cos(Math
 					.toRadians(this.rotation.y)) * trueSpeed;
+			if(Game.NOCLIP)
+				this.delta.y += -(float) Math.sin(Math.toRadians(this.rotation.x)) * trueSpeed;
+
+			
 			this.height = BASE_HEIGHT + bobbing;
 			n++;
 		}
@@ -215,6 +227,9 @@ public class Player extends Entity {
 					.sin(Math.toRadians(this.rotation.y)) * trueSpeed;
 			this.delta.z -= -(float) Math.cos(Math
 					.toRadians(this.rotation.y)) * trueSpeed;
+			if(Game.NOCLIP)
+				this.delta.y -= -(float) Math.sin(Math.toRadians(this.rotation.x)) * trueSpeed;
+			
 			this.height = BASE_HEIGHT + bobbing;
 			n++;
 

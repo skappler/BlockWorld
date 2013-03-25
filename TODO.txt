@@ -1,5 +1,5 @@
-TODO:	Add View Vector
-	Add Lighting
+TODO:	Add Lighting
+	Add View Vector [Hopefully Added]
 	Rewrite jumping and gravity (Check rectangle with block below) [Miracly working oO]
 	Saving space for Blocks [FINISHED?]
 	Move GUI into Screen class [FINISHED]
