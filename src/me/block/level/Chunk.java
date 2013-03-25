@@ -54,6 +54,12 @@ public class Chunk {
 
 	public void render() {
 
+		MyTextureLoader.SPRITESHEET.bind();
+		
+		GL11.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		GL11.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		
 		GL11.glCallList(displayList);
 
 	}
@@ -202,10 +208,10 @@ public class Chunk {
 		
 		GL11.glNewList(displayList, GL11.GL_COMPILE);
 		
-		MyTextureLoader.SPRITESHEET.bind();
-		
-		GL11.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		GL11.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+//		MyTextureLoader.SPRITESHEET.bind();
+//		
+//		GL11.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+//		GL11.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 		GL11.glBegin(GL11.GL_QUADS);
 		

@@ -1,4 +1,5 @@
-TODO:	Add Lighting
+TODO:	Add Sprites
+	Add Lighting
 	Add View Vector [Hopefully Added]
 	Rewrite jumping and gravity (Check rectangle with block below) [Miracly working oO]
 	Saving space for Blocks [FINISHED?]

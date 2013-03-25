@@ -7,9 +7,12 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
 
+import me.block.entities.Entity;
+import me.block.entities.ExampleEntity;
 import me.block.entities.Player;
 import me.block.util.MapFromText;
 
@@ -26,6 +29,7 @@ public class Level {
 
 	private Player player;
 	public ArrayList<Chunk> chunks;
+	private LinkedList<Entity> entities;
 
 	private BufferedImage mapImage;
 
@@ -33,7 +37,16 @@ public class Level {
 
 		this.player = p;
 		this.chunks = new ArrayList<Chunk>();
+		this.entities = new LinkedList<Entity>();
+		
+		this.entities.add(new ExampleEntity());
+		this.entities.add(new ExampleEntity(16, 6));
+		this.entities.add(new ExampleEntity(14, 6));
 
+		for(Entity e : entities){
+			e.setLevel(this);
+		}
+		
 //		 loadTerrainLevel();
 //		 loadEarlyLevel();
 		loadLabyrinthLevel();
@@ -135,6 +148,8 @@ public class Level {
 
 	public void render() {
 
+	
+		
 		// Position the camera
 		glRotatef(player.camera.rotation.x, 1, 0, 0);
 		glRotatef(player.camera.rotation.y, 0, 1, 0);
@@ -145,6 +160,12 @@ public class Level {
 
 		player.render();
 
+
+		
+			for(Entity e : entities){
+			e.render();
+		}
+		
 		// Render the world
 		for (Chunk c : chunks) {
 
@@ -172,7 +193,14 @@ public class Level {
 	public void update() {
 
 		player.update();
-
+		
+		for(Entity e : entities){
+			e.update();
+		}
+	}
+	
+	public Player getPlayer(){
+		return player;
 	}
 	
 	public BufferedImage getMapImage(){

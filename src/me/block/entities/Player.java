@@ -180,7 +180,10 @@ public class Player extends Entity {
 		view.z = -(float) Math.cos(Math.toRadians(this.rotation.y));//+ camera.position.z;
 		view.y = -(float) Math.sin(Math.toRadians(this.rotation.x));//+ camera.position.y;
 		view.normalise();
-			
+		
+		if(Game.DEBUG_VIEW)
+			System.out.println(view);
+		
 		oldPos.x = position.x;
 		oldPos.y = position.y;
 		oldPos.z = position.z;
@@ -469,6 +472,10 @@ public class Player extends Entity {
 		 (position.z - size / 2),(float) size,(float) size);
 	}
 
+	public Vector3f getViewVector(){
+		return view;
+	}
+	
 	public void setCamera() {
 
 		camera.rotation.x = this.rotation.x;
