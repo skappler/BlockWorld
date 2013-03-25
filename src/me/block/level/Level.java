@@ -43,12 +43,12 @@ public class Level {
 
 	public void loadEarlyLevel(){
 
-		 this.chunks.add(new Chunk(0,0,this));
-		 this.chunks.add(new Chunk(0, -1, this));
-		 this.chunks.add(new Chunk(-1,0,this));
-		 this.chunks.add(new Chunk(0,1,this));
-		 this.chunks.add(new Chunk(1,0,this));
-		 this.chunks.add(new Chunk(0,-2,this));
+		 this.chunks.add(new Chunk(0,0,this,true));
+		 this.chunks.add(new Chunk(0, -1, this,true));
+		 this.chunks.add(new Chunk(-1,0,this,true));
+		 this.chunks.add(new Chunk(0,1,this,true));
+		 this.chunks.add(new Chunk(1,0,this,true));
+		 this.chunks.add(new Chunk(0,-2,this,true));
 		
 		 for(Chunk c : chunks){
 			 c.createDisplayList();

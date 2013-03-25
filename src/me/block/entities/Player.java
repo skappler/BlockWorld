@@ -53,8 +53,8 @@ public class Player extends Entity {
 	private HashMap<Integer, Boolean> keyPressed;
 
 	private Vector3f oldPos;
-	private Vector3f delta;
-
+	private Vector3f delta;	
+	
 	public Player() {
 		super();
 
@@ -66,7 +66,7 @@ public class Player extends Entity {
 		this.gravitySpeed = (float) (1.5 * speed);
 		this.trueSpeed = speed;
 		this.height = BASE_HEIGHT;
-		this.position.y = 7.0f;
+		this.position.y = 6.0f;
 		this.position.x = 5.0f;
 		this.position.z = 5.0f;
 
@@ -327,10 +327,30 @@ public class Player extends Entity {
 
 			jumping = true;
 			readyToJump = false;
-			position.y += jumpSpeed;
-			currentJump += jumpSpeed;
+			
+			Block above = null;
+						
+			if(currentChunk != null){
+				above = currentChunk.getBlock((int) Math.floor(position.x),
+						(int) Math.floor(position.y + this.height + 1),
+						(int) Math.floor(position.z));
+			}
+					
+			if(above == null ){
+					
+				position.y += jumpSpeed;
+				currentJump += jumpSpeed;
+			}else{
+					
+				position.y = above.getCoordinates().y -1 -height;
+				
+				jumping = false;
+				currentJump = 0f;
+			}
+			
 
-			if (currentJump >= maxJump) {
+			if (currentJump >= maxJump ) {
+								
 				jumping = false;
 				currentJump = 0f;
 			}
@@ -339,26 +359,89 @@ public class Player extends Entity {
 
 	public void gravity() {
 
+		
+		//++++++++++++++
+		// PROBLEM: auch am rand würde collision stattfinden. Lösung: checke die ecken
+		//++++++++++++++
+		
+//		boolean mayFall = true;
+//		float bottom = 1000f;
+//		Rectangle bounds = getBounds();
+//		Block b = null;
+//				
+//		for(int i = 0; i < bounds.getPointCount(); i++){
+//			
+//			if(currentChunk != null && (b=currentChunk.getBlock(bounds.getPoint(i)[0], position.y -1,bounds.getPoint(i)[1])) != null){
+//				mayFall = false;
+//				bottom = b.getCoordinates().y  +1;
+////				System.out.println(currentChunk.getBlock(bounds.getPoint(i)[0],position.y,bounds.getPoint(i)[1]).toString());
+//				break;
+//			}
+//			
+//
+//		}
+//		
+//		if(mayFall)
+//			position.y -= gravitySpeed;
+//		else{
+////			for(int i = 0; i < bounds.getPointCount();i++){
+////				if(currentChunk.getBlock(bounds.getPoint(i)[0], position.y +1,bounds.getPoint(i)[1]) != null){
+////					position.y -= gravitySpeed;
+////					System.out.println("true");
+////					break;
+////				}
+////			}
+//			if( position.y -1 > bottom)
+//				position.y -= gravitySpeed;
+//			else
+//			if(position.y -1 <= bottom)
+//				if(!jumping)
+//					position.y = bottom;
+//				readyToJump = true;
+//		}
+			
+			
+			
+//		System.out.println(mayFall+" "+bottom+ " "+position.y);
+	
+		
 		Block under = null;
 
 		if(currentChunk != null){
 			under = currentChunk.getBlock((int) Math.floor(position.x),
-					(int) Math.floor(position.y - 1),
+					(int) Math.floor(position.y -1),
 					(int) Math.floor(position.z));
-	}
+		}
+		
+		
+//		if(under != null){
+//		Display.setTitle(under.getCoordinates().toString());
+//		System.out.println(under.getCoordinates().toString() + " "+ ((int) Math.floor(position.y - 1)));
+//		}
+//		else
+//			Display.setTitle("null");
+		
+		
+		
 		
 		if (under == null) {
-			position.y -= gravitySpeed;
+			
+				position.y -= gravitySpeed;
 		} else {
 
-			if (position.y > under.getCoordinates().y + 1)
-				position.y -= gravitySpeed;
-			if (position.y <= under.getCoordinates().y + 1) {
+			if (under != null && position.y > under.getCoordinates().y + 1){
+
+					position.y -= gravitySpeed;
+				
+			}
+			if (under != null && position.y <= under.getCoordinates().y + 1) {
 				position.y = under.getCoordinates().y + 1;
 				readyToJump = true;
 
 			}
 		}
+		
+	
 		
 		if (position.y < -8)
 			position.y = 16.0f;
@@ -366,7 +449,7 @@ public class Player extends Entity {
 	
 	public Rectangle getBounds() {
 //		return new Rectangle(position.x, position.z, 0f, 0f);
-		float size = .4f;
+		float size = .3f;
 		 return new Rectangle((float)(position.x - size / 2),(float)
 		 (position.z - size / 2),(float) size,(float) size);
 	}

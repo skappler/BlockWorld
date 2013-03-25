@@ -1,5 +1,7 @@
 package me.block.cubes;
 
+import javax.swing.text.Position;
+
 import me.block.texture.MyTextureLoader;
 
 import org.lwjgl.util.vector.Vector3f;
@@ -15,7 +17,7 @@ import static org.lwjgl.opengl.GL11.*;
  *         attributes and methodes provided for a block
  * 
  *         Every block has the normed size 1x1x1. The given coordinate is the
- *         top back left corner of the cube
+ *         bottom back left corner of the cube
  */
 
 public class Block {
@@ -258,5 +260,8 @@ public class Block {
 		return this.coordinate;
 	}
 	
+	public String toString(){
+		return this.coordinate.toString();
+	}
 	
 }

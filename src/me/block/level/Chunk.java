@@ -41,11 +41,15 @@ public class Chunk {
 		level = l;
 		blocks = new Block[16 * 16 * 16];
 
-//		loadExampleChunk1();
-
-//		displayList = GL11.glGenLists(1);
-//
-//		createDisplayList();
+	}
+	
+	public Chunk(int x , int z, Level l, boolean loadExample){
+		coordinates = new Vector3f(x, 0, z);
+		level = l;
+		blocks = new Block[16 * 16 * 16];
+		
+		if(loadExample)
+			loadExampleChunk1();
 	}
 
 	public void render() {
@@ -249,6 +253,10 @@ public class Chunk {
 		return (up || down || back || front || left || right);
 	}
 
+	public Block getBlock(float x, float y, float z){
+		return getBlock((int) Math.floor(x), (int) Math.floor(y), (int) Math.floor(z));
+	}
+	
 	public Block getBlock(int x, int y, int z) {
 
 		if (y < 0 || y > 16)
