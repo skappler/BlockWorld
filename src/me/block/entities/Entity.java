@@ -29,6 +29,7 @@ public abstract class Entity {
 	public float speed;
 	public float height;
 
+
 	public Entity() {
 
 		position = new Vector3f(0, 0, 0);

@@ -1,4 +1,5 @@
-TODO:	Add Sprites
+TODO:	Add Sprites, Entities and Animations
+	Add Skybox
 	Add Lighting
 	Add View Vector [Hopefully Added]
 	Rewrite jumping and gravity (Check rectangle with block below) [Miracly working oO]
@@ -18,7 +19,8 @@ BUG: 	Chunk with negative coordinates got weird block coordinates [FIXED]
 	Chunks with negative coordinates remove wrong side for rendering
 		Still get the wrong block from getBlock[FIXED]
 
-MINOR: 	Catch Array Bounds in Gui [FIXED]
+MINOR:	Sort Entities to prevent transparency bug (Sort according to distance to the player) [Done, but inefficient]
+	Catch Array Bounds in Gui [FIXED]
 	Multiple jumping [FIXED]
 	Adjust speed when walking diagonal (Vectors) [FIXED]
 	Chunk overlapping getBlock [FIXED]

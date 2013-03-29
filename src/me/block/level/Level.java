@@ -7,10 +7,16 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import org.lwjgl.util.vector.Vector3f;
+
+import me.block.Game;
 import me.block.entities.Entity;
 import me.block.entities.ExampleEntity;
 import me.block.entities.Player;
@@ -35,13 +41,15 @@ public class Level {
 
 	public Level(Player p) {
 
+		p.setLevel(this);
+		
 		this.player = p;
 		this.chunks = new ArrayList<Chunk>();
 		this.entities = new LinkedList<Entity>();
 		
-		this.entities.add(new ExampleEntity());
-		this.entities.add(new ExampleEntity(16, 6));
-		this.entities.add(new ExampleEntity(14, 6));
+		this.entities.add(new ExampleEntity(18,5,6));
+		this.entities.add(new ExampleEntity(16,5, 6));
+		this.entities.add(new ExampleEntity(14,5, 6));
 
 		for(Entity e : entities){
 			e.setLevel(this);
@@ -162,16 +170,18 @@ public class Level {
 
 
 		
-			for(Entity e : entities){
-			e.render();
-		}
-		
+			
 		// Render the world
 		for (Chunk c : chunks) {
 
 			c.render();
 		}
 
+		for(Entity e : entities){
+			e.render();
+		}
+		
+		
 	}
 
 	public Chunk getChunkAt(float x, float z) {
@@ -193,6 +203,25 @@ public class Level {
 	public void update() {
 
 		player.update();
+		
+		if(Game.RENDER_NICE)
+			Collections.sort(entities, new Comparator<Entity>() {
+	
+				@Override
+				public int compare(Entity o1, Entity o2) {
+					
+					//o1 < o2 => -1
+					float distanceO1 = Math.abs(Vector3f.sub(o1.position, player.position, new Vector3f()).length());
+					float distanceO2 = Math.abs(Vector3f.sub(o2.position, player.position, new Vector3f()).length());
+	
+					if(distanceO1 < distanceO2){
+						return 1;
+					}else{
+						return -1;
+					}
+					
+				}
+			});
 		
 		for(Entity e : entities){
 			e.update();

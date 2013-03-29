@@ -20,7 +20,6 @@ public class Screen {
 		
 		player = new Player();
 		level = new Level(player);
-		player.setLevel(level);
 		player.checkChunk();
 		
 		gui = new Gui(this);

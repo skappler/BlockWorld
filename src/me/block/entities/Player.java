@@ -76,6 +76,7 @@ public class Player extends Entity {
 		this.keyPressed = new HashMap<Integer, Boolean>();
 		this.keyPressed.put(Keyboard.KEY_F, false);
 		this.keyPressed.put(Keyboard.KEY_M, false);
+		this.keyPressed.put(Keyboard.KEY_X, false);
 		
 		setCamera();
 	}
@@ -336,6 +337,13 @@ public class Player extends Entity {
 			keyPressed.put(Keyboard.KEY_M, false);
 		}
 
+		if(Keyboard.isKeyDown(Keyboard.KEY_X)){
+			if(!keyPressed.get(Keyboard.KEY_X))
+				Game.NOCLIP = !Game.NOCLIP;
+			keyPressed.put(Keyboard.KEY_X, true);
+		}else{
+			keyPressed.put(Keyboard.KEY_X, false);
+		}
 
 	}
 

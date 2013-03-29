@@ -53,6 +53,7 @@ public class Game {
 	public static boolean CULL_FACE = false;
 	public static boolean FOG = true;
 	public static boolean NOCLIP = false;
+	public static boolean RENDER_NICE = true;
 
 	// General variables
 	private boolean finished = false;
@@ -210,6 +211,9 @@ public class Game {
 		glDepthFunc(GL_LEQUAL);
 		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
+		glEnable(GL_BLEND); 
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		
 		glEnable(GL_TEXTURE_2D);
 
 		if(FOG)
