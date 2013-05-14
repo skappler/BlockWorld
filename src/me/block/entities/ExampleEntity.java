@@ -7,6 +7,7 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 
 import me.block.screen.Sprite;
+import me.block.texture.MyTextureLoader;
 
 import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.geom.Rectangle;
@@ -18,15 +19,8 @@ public class ExampleEntity extends Entity{
 	
 	public ExampleEntity(){
 		
-		InputStream in = this.getClass().getResourceAsStream(
-				"/me/block/entities/example1.png");
-		try {
-			texture = ImageIO.read(in);
-			sprite = new Sprite(texture,this,0.9f,1.8f,1);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		
+		sprite = new Sprite(MyTextureLoader.RobotExample,this,1.f,2.0f,1);
 		
 		position = new Vector3f();
 		rotation = new Vector3f();

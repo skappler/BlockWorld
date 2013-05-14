@@ -2,6 +2,7 @@ package me.block.entities;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 
 import me.block.Game;
 import me.block.camera.Camera;
@@ -30,7 +31,7 @@ import org.newdawn.slick.geom.Rectangle;
 public class Player extends Entity {
 
 	// CONSTANTS
-	public final float BASE_HEIGHT = .6f; // The normal height of the player
+	public final float BASE_HEIGHT = .35f; // The normal height of the player
 
 	// General variables
 	public Camera camera;

@@ -1,6 +1,7 @@
 TODO:	Add Sprites, Entities and Animations
+	Add shooting and/or removing blocks
 	Add Skybox
-	Add Lighting
+	Add Lighting [Screw Lighting. This sucks anyway -.-]
 	Add View Vector [Hopefully Added]
 	Rewrite jumping and gravity (Check rectangle with block below) [Miracly working oO]
 	Saving space for Blocks [FINISHED?]

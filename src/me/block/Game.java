@@ -4,6 +4,9 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.util.glu.GLU.*;
 
 import java.awt.GraphicsEnvironment;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 import me.block.screen.Gui;
 import me.block.screen.Screen;
@@ -17,7 +20,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.util.Log;
-
+import static org.lwjgl.opengl.GL20.*;
 /**
  * 
  * @author skappler
@@ -54,15 +57,21 @@ public class Game {
 	public static boolean FOG = true;
 	public static boolean NOCLIP = false;
 	public static boolean RENDER_NICE = true;
+	public static boolean LIGHTING = false;
+	public static boolean SHADERS = false;
 
 	// General variables
 	private boolean finished = false;
 
 	// Game Mechanics
 	private Screen screen;
-//	private Gui gui;
 	private int fps = 0;
 	private double lastFpsTime = 0;
+	
+	//Shader
+	private int shaderProgram;
+	private int vertexShader;
+	private int fragmentShader;
 
 	// ########## Methods ##############
 
@@ -96,7 +105,9 @@ public class Game {
 
 		// Initiate OpenGL
 		initOGL();
-
+		
+		if(SHADERS)
+			initShaders();
 		// Start the GameLoop
 		gameLoop();
 
@@ -221,8 +232,79 @@ public class Game {
 		
 		if(CULL_FACE)
 		 glEnable(GL_CULL_FACE);
+
+		if(LIGHTING)
+			setUpLighting();
+		
 	}
 
+	public void initShaders(){
+		shaderProgram = glCreateProgram();
+		fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+		vertexShader = glCreateShader(GL_VERTEX_SHADER);
+		
+		StringBuilder vertexShaderSource = new StringBuilder();
+		StringBuilder fragmentShaderSource = new StringBuilder();
+
+		try{
+			BufferedReader reader = new BufferedReader(new FileReader("src/me/block/shaders/shader.vert"));
+			String line;
+			
+			while((line = reader.readLine()) != null){
+				vertexShaderSource.append(line+"\n");
+			}
+			reader.close();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		try{
+			BufferedReader reader = new BufferedReader(new FileReader("src/me/block/shaders/shader.frag"));
+			String line;
+			
+			while((line = reader.readLine()) != null){
+				fragmentShaderSource.append(line+"\n");
+			}
+			reader.close();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		
+		glShaderSource(fragmentShader, fragmentShaderSource);
+		glCompileShader(fragmentShader);
+		
+		glShaderSource(vertexShader, vertexShaderSource);
+		glCompileShader(vertexShader);
+		
+		if (glGetShaderi(vertexShader, GL_COMPILE_STATUS) == GL_FALSE) {
+            System.err.println("Vertex shader wasn't able to be compiled correctly. Error log:");
+            System.err.println(glGetShaderInfoLog(vertexShader, 1024));
+        }
+		
+		 if (glGetShaderi(fragmentShader, GL_COMPILE_STATUS) == GL_FALSE) {
+	            System.err.println("Fragment shader wasn't able to be compiled correctly. Error log:");
+	            System.err.println(glGetShaderInfoLog(fragmentShader, 1024));
+	        }
+		
+		glAttachShader(shaderProgram, fragmentShader);
+		glAttachShader(shaderProgram, vertexShader);
+		glLinkProgram(shaderProgram);
+		glValidateProgram(shaderProgram);
+		
+		glUseProgram(shaderProgram);
+		
+	}
+	
+	private static void setUpLighting() {
+        glShadeModel(GL_SMOOTH);
+//        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHT0);
+        glLightModel(GL_LIGHT_MODEL_AMBIENT, MyUtil.allocateFloat(new float[]{0.05f, 0.05f, 0.05f, 1f}));
+        glLight(GL_LIGHT0, GL_POSITION, MyUtil.allocateFloat(new float[]{0, 0, 0, 1}));
+        glEnable(GL_COLOR_MATERIAL);
+        glColorMaterial(GL_FRONT, GL_DIFFUSE);
+    }
+	
 	public static void enableFog() {
 
 		glFog(GL_FOG_COLOR,

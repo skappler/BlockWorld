@@ -13,6 +13,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureImpl;
+import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.BufferedImageUtil;
 
 import me.block.entities.Entity;
@@ -31,19 +33,15 @@ public class Sprite {
 	private int frames;
 	private int currentFrame = 1;
 	
-	public Sprite(BufferedImage img, Entity ent, float width, float height, int frames){
+	public Sprite(Texture t, Entity ent, float width, float height, int frames){
 		
 		this.entity = ent;
 		this.width = width;
 		this.height = height;
 		this.frames = frames;
+		this.tex = t;
 		
-		try {
-			tex = BufferedImageUtil.getTexture("EXAMPLE1", img);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+				
 	}
 	
 	public void update(Player p){
@@ -67,6 +65,7 @@ public class Sprite {
 		
 		GL11.glBegin(GL11.GL_QUADS);
 			GL11.glTexCoord2f(1f, 1f);
+			GL11.glNormal3f(-1, 0,0);
 			GL11.glVertex3f(0f,0f,0f -width/2f);
 			GL11.glTexCoord2f(1f, 0f);
 			GL11.glVertex3f(0f,0f + height, 0f -width/2f);

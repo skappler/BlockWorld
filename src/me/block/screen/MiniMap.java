@@ -8,6 +8,7 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
 import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
 import static org.lwjgl.opengl.GL11.glVertex2i;
@@ -83,6 +84,7 @@ public class MiniMap extends GuiElement{
 				glTexCoord2f(0f, 1f);
 				glVertex2i(0, 192);
 			glEnd();
+			glPopMatrix();
 		}
 		
 		
