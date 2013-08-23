@@ -77,7 +77,7 @@ public class Chunk {
 			for (int j = 0; j < 16; j++) { // z
 				for (int y = 0; y < 10; y++) { // y
 
-					if(y < 6){
+					if(y == 5){
 						addBlock(i, y, j, Block.STONEFLOOR_ID);
 					}
 					if(y >= 6 && y < 8){
@@ -92,7 +92,7 @@ public class Chunk {
 						}
 						
 					}
-					if(y >= 8){
+					if(y == 8){
 						addBlock(i, y, j, Block.STONEFLOOR_ID);
 					}
 

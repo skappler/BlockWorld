@@ -50,8 +50,8 @@ public class Game {
 
 	// General Setting
 	public static final float MOUSESPEED = 0.3f;
-	public static boolean CROSSHAIR = false;
-	public static int CROSSHAIR_SIZE = 4;
+	public static boolean CROSSHAIR = true;
+	public static int CROSSHAIR_SIZE = 16;
 	public static boolean MINIMAP = false;
 	public static boolean CULL_FACE = false;
 	public static boolean FOG = true;

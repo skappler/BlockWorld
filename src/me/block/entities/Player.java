@@ -75,9 +75,10 @@ public class Player extends Entity {
 
 		//init all keys the player should be able to use
 		this.keyPressed = new HashMap<Integer, Boolean>();
-		this.keyPressed.put(Keyboard.KEY_F, false);
-		this.keyPressed.put(Keyboard.KEY_M, false);
-		this.keyPressed.put(Keyboard.KEY_X, false);
+		this.keyPressed.put(Keyboard.KEY_F, false); //Fog
+		this.keyPressed.put(Keyboard.KEY_M, false); //Map
+		this.keyPressed.put(Keyboard.KEY_X, false); //No clip
+		this.keyPressed.put(Keyboard.KEY_C, false); //crosshair
 		
 		setCamera();
 	}
@@ -89,7 +90,8 @@ public class Player extends Entity {
 		// bobbing += Math.sin(tick/5)/75;
 		
 		handleInput();
-		jump();
+		
+//		jump();
 		if(!Game.NOCLIP)
 			gravity();
 		setCamera();
@@ -346,6 +348,14 @@ public class Player extends Entity {
 			keyPressed.put(Keyboard.KEY_X, false);
 		}
 
+		if(Keyboard.isKeyDown(Keyboard.KEY_C)){
+			if(!keyPressed.get(Keyboard.KEY_C))
+				Game.CROSSHAIR = !Game.CROSSHAIR;
+			keyPressed.put(Keyboard.KEY_C, true);
+		}else{
+			keyPressed.put(Keyboard.KEY_C, false);
+		}
+		
 	}
 
 	private void jump() {
@@ -388,7 +398,7 @@ public class Player extends Entity {
 
 		
 		//++++++++++++++
-		// PROBLEM: auch am rand wŸrde collision stattfinden. Lšsung: checke die ecken
+		// PROBLEM: auch am rand wï¿½rde collision stattfinden. Lï¿½sung: checke die ecken
 		//++++++++++++++
 		
 //		boolean mayFall = true;

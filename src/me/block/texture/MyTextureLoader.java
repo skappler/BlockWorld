@@ -30,6 +30,7 @@ public class MyTextureLoader {
 	public static Texture SPRITESHEET = loadTexture("spritesheet.png");
 	public static Texture ExampleSprite = loadTexture("example1.png");
 	public static Texture RobotExample = loadTexture("robot1.png");
+	public static Texture CROSSHAIR = loadTexture("crosshair.png");
 
 	// Static values to keep track of the size of the Spritesheet
 	public static int TILESIZE = 16;
